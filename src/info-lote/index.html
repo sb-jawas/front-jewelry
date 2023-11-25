@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="../../node_modules/bootstrap-icons/font/bootstrap-icons.css">
+   <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+
+    <title>Lote | Clasificación</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Lote: <div id="info-lote">No se ha podido cargar el lote</div></h1>
+        <div class="col-md-6">
+
+            <table class="table table-striped" id="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Componentes</th>
+                        <th scope="col">Cantidad</th>
+                        <th scope="col"><i class="bi bi-clipboard-plus-fill btn btn-success" id="add-component"></i></i></th>
+                    </tr>
+                </thead>
+                <tbody id="tbody"></tbody>
+            </table>
+            <div class="row">
+                <div class="col-md-3"></div>
+            <div class="col-md">
+                <button disabled class="btn btn-danger" id="btn-rechazar">Rechazar</button>
+                <button disabled class="btn btn-success" id="btn-clasificar">Clasificar</button>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    <!-- <script src="../../dist/clasificador.js"></script> -->
+    <script type="module" src="app.js"></script>
+</body>
+</html>
