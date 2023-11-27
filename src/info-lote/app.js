@@ -10,11 +10,25 @@ const btnRechazar = document.getElementById("btn-rechazar");
 
 const asignCheck = document.getElementsByName("asign");
 
+let ubi = document.getElementById("ubi")
+let status = document.getElementById("status")
+let infoLote = document.getElementById("info-lote")
+
+
 let i = 1;
 let url = domain+"/api/componentes"
 let componentes = asyncApiRequest("GET",url).then(function(resComp){
   return resComp
 })
+
+let idLote = localStorage.getItem("loteId")
+url = domain+"/api/lote/"+idLote
+asyncApiRequest("GET",url).then(function(lote){
+    infoLote.textContent = "Lote: " + lote.id
+    ubi.textContent += " "+ lote.ubi 
+    status.textContent += " "+  lote.status
+})
+
 
 addComponent.addEventListener("click", function () {
     
@@ -47,6 +61,7 @@ addComponent.addEventListener("click", function () {
   btnDelete.appendChild(icon);
   let groupBtnDelete = document.getElementsByName("btnDelete");
   let groupIcoDelete = document.getElementsByName("icoDelete");
+
   btnDelete.addEventListener("click", function (event) {
     
       let z = event.target.id;
@@ -92,7 +107,6 @@ function disableOptionList(){
         let i = 0
         while(i<event.target.length){
             if(event.target[i].selected){
-                localStorage.setItem('lista-componentes', event.target);
                 event.target[i].setAttribute("selected","true")
                 event.target[i].setAttribute("disabled","true")
                 btnClasificar.removeAttribute("disabled")
