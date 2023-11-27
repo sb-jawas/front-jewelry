@@ -16,6 +16,8 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
+    "bootstrap": "^5.3.2",
+    "bootstrap-icons": "^1.11.2",
     "lodash": "^4.17.21",
     "sass": "^1.69.5"
   }
