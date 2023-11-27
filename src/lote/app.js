@@ -7,6 +7,7 @@ let btn = document.getElementById("btn")
 const domain = "http://localhost:1234"
 
 btn.addEventListener('click',function(){
+    btn.setAttribute("disabled","true")
     let noti = document.getElementById("notification")
 
     let loader = document.createElement("div")
@@ -18,8 +19,12 @@ btn.addEventListener('click',function(){
     console.log(arr)
     newLote(arr).then(function(res){
         document.getElementById("loader").remove()
-        console.log(res)
         sendNotification(res.status,"alert alert-success")
+
+        setTimeout(() => {
+            location.reload();
+        }, 5000);
+        
     }).catch(function(error){
         console.log(error)
     })
