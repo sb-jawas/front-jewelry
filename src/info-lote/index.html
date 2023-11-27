@@ -12,18 +12,20 @@
 </head>
 <body>
     <div class="container">
-        <h1 id="info-lote">Lote: No se ha podido cargar el lote</h1>
-        <h4 id="ubi">Ubicación:</h4>
-        <h4 id="status">Estado:</h4>
+        <h1 id="info-lote">Lote: No se ha podido cargar el ID lote</h1>
+        <h4 id="ubi">Ubicación: No se ha podido cargar la ubicación del lote</h4>
+        <h4 id="status">Estado: No se ha podido cargar el estado del lote</h4>
+        <h4 id="observation">Observacion: No se ha podido cargar la observación del lote</h4>
+
 
         <div class="col-md-6">
 
             <table class="table table-striped" id="table">
                 <thead>
-                    <tr>
+                    <tr id="trTable">
                         <th scope="col">Componentes</th>
                         <th scope="col">Cantidad</th>
-                        <th scope="col"><i class="bi bi-clipboard-plus-fill btn btn-success" id="add-component"></i></i></th>
+                       
                     </tr>
                 </thead>
                 <tbody id="tbody"></tbody>
@@ -31,8 +33,8 @@
             <div class="row">
                 <div class="col-md-3"></div>
             <div class="col-md">
-                <button disabled class="btn btn-danger" id="btn-rechazar">Rechazar</button>
-                <button disabled class="btn btn-success" id="btn-clasificar">Clasificar</button>
+                <button disabled class="btn btn-danger" id="btn-rechazar" name="btn">Rechazar</button>
+                <button disabled class="btn btn-success" id="btn-clasificar" name="btn">Clasificar</button>
             </div>
         </div>
     </div>
