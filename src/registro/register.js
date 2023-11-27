@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     console.log("El DOM está completamente cargado y parseado");
+    let  usernameConfirm = false;
+    let  passwordConfirm = false;
     
     // Maneja el envío del formulario de registro
     document.getElementById('registerForm').addEventListener('submit', function (e) {
@@ -13,14 +15,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Validación de campos en tiempo real
   document.getElementById('newUsername').addEventListener('input', function () {
+    
     const username = this.value;
     const validationMessage = document.getElementById('usernameValidationMessage');
     if (/^[a-zA-Z0-9_]{4,15}$/.test(username)) {
         validationMessage.textContent = 'Nombre de usuario válido';
         validationMessage.style.color = 'green';
+         usernameConfirm = true;
     } else {
         validationMessage.textContent = 'El nombre de usuario debe tener entre 4 y 10 caracteres y solo puede contener letras, números y _';
         validationMessage.style.color = 'red';
+         usernameConfirm = false;
     }
 });
 
@@ -45,9 +50,12 @@ document.getElementById('confirmPassword').addEventListener('input', function ()
     if (confirmPassword === password) {
         validationMessage.textContent = 'Las contraseñas coinciden';
         validationMessage.style.color = 'green';
+
+         passwordConfirm = true;
     } else {
         validationMessage.textContent = 'Las contraseñas no coinciden';
         validationMessage.style.color = 'red';
+        passwordConfirm = false;
     }
 });
 
@@ -63,8 +71,8 @@ document.getElementById('confirmPassword').addEventListener('input', function ()
         const usernameValidationMessage = document.getElementById('usernameValidationMessage');
         const passwordValidationMessage = document.getElementById('passwordValidationMessage');
 
-        if (usernameValidationMessage.style.color === 'green' &&
-            passwordValidationMessage.style.color === 'green') {
+        if (usernameConfirm == true &&
+        passwordConfirm == true) {
 
                 alert("dentro");
             // Realiza la petición al servidor
