@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
         validationMessage.style.color = 'green';
          usernameConfirm = true;
     } else {
-        validationMessage.textContent = 'El nombre de usuario debe tener entre 4 y 10 caracteres y solo puede contener letras, números y _';
+        validationMessage.textContent = 'El nombre de usuario debe tener entre 4 y 15 caracteres y solo puede contener letras, números y _';
         validationMessage.style.color = 'red';
          usernameConfirm = false;
     }
