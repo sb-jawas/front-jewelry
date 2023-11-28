@@ -68,34 +68,23 @@ document.getElementById('confirmPassword').addEventListener('input', function ()
 
                 alert("dentro");
             // Realiza la petición al servidor
-            fetch('http://127.0.0.1:8000/api/users', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name: newUsername,
-                    email: newEmail,
-                    password: newPassword,
-                }),
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error en la creación del usuario');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Usuario creado con éxito:', data);
-                // Aquí puedes redirigir al usuario o mostrar un mensaje de éxito
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                // Manejar errores, como mostrar un mensaje al usuario
-            });
+            let bodyContent =JSON.stringify({
+                name: newUsername,
+                email: newEmail,
+                password: newPassword,
+                }) ;
+            let url = domain+"/api/users"
+            asyncApiRequest("POST",url,bodyContent).then(function(resRegister){
+            console.log(resRegister);
+    })
+           
         } else {
             alert('Por favor, completa todos los campos correctamente.');
         }
+
+
+
+        
     });
 
 
