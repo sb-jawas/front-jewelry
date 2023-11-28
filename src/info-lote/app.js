@@ -38,8 +38,9 @@ asyncApiRequest("GET", url).then(function (lote) {
     trTable.appendChild(th);
     
     let addComponent = document.getElementById("add-component");
-    
-    listenerBtnAdd(addComponent);
+    let lista = createList(componentes);
+    addInsert(lista)
+    listenerBtnAdd(addComponent, lista);
     
   } else {
     let buttons = document.getElementsByName("btn");
@@ -50,10 +51,8 @@ asyncApiRequest("GET", url).then(function (lote) {
 });
 
 
-
-function listenerBtnAdd(addComponent) {
+function listenerBtnAdd(addComponent, lista) {
     addComponent.addEventListener("click", function () {
-      let lista = createList(componentes);
     let inputCantidad = document.createElement("input");
     inputCantidad.setAttribute("class", "form-control");
     inputCantidad.setAttribute("type", "number");
@@ -68,7 +67,7 @@ function listenerBtnAdd(addComponent) {
 
     icon.setAttribute("id", i);
     btnDelete.setAttribute("id", i);
-    i++;
+    
 
     btnDelete.appendChild(icon);
     let groupBtnDelete = document.getElementsByName("btnDelete");
@@ -76,29 +75,20 @@ function listenerBtnAdd(addComponent) {
 
     btnDelete.addEventListener("click", function (event) {
       let z = event.target.id;
-      while (z < groupBtnDelete.length) {
-        groupBtnDelete[z].id--;
-        groupIcoDelete[z].id--;
-        z++;
-      }
-
-      table.deleteRow(event.target.id);
-
-      if (tblBody.childNodes.length == 0) {
-        btnClasificar.setAttribute("disabled", true);
-      }
-
-      i = z;
+      console.log(z)
+      document.getElementById(`td${z}`).remove()
     });
-
+    
     let arr = [lista, inputCantidad, btnDelete];
-    addInsert(arr);
+    addInsert(arr, i);
+    i++;
     disableOptionList()
   });
 }
 
-function addInsert(elements) {
+function addInsert(elements, id) {
   const row = document.createElement("tr");
+  row.setAttribute("id",`td${id}`)
   let cell = null;
   let i = 0;
   while (i < elements.length) {
