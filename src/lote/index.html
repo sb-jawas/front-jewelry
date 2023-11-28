@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="../../node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="style.css">
+    <title>Lote</title>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Jawas-jewelry</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"></a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  General Metz
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="#">Modificar mi perfil</a></li>
+                <li><a class="dropdown-item" href="#">Cambiar rol...</a></li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+            </li>
+          </ul>
+          <form class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+          <div class="d-flex align-items-center">
+            <h1 class="m-3 p-3">Lote</h1>
+          </div>
+          <div class="row">
+            <div class="col-3">
+            </div>
+            <div class="col-6">              
+              <div id="notification"></div>
+            </div>
+          </div>
+            <div class="col-3"></div>
+            <form onsubmit="event.preventDefault();" class="col-6">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="ubi" placeholder="name@example.com">
+                    <label for="floatingInput">Ubicación</label>
+                </div>
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="obs" placeholder="Password">
+                    <label for="floatingPassword">Observación</label>
+                </div>
+                <input type="submit" class="btn btn-primary m-3" id="btn" value="Enviar">
+            </form>
+            <iframe title="mapa"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3114.111149809596!2d-4.108733849342546!3d38.69229103675259!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd6b8cf65a7a7d2d%3A0x1d6b0e916d0e0d55!2sPaseo%20de%20San%20Gregorio%2C%2082b%2C%2013500%20Puertollano%2C%20Ciudad%20Real!5e0!3m2!1ses!2ses!4v1700668437925!5m2!1ses!2ses"
+                width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script type="module" src="app.js"></script>
+</body>
+
+</html>

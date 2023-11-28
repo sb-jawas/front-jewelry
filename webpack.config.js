@@ -1,9 +1,14 @@
 const path = require('path');
 
 module.exports = {
-  entry: './src/index.js',
+  entry: {
+    lote: './src/lote/app.js',
+    clasificador:'./src/lote-clasificador/app.js',
+    mislotes: './src/mis-lotes/app.js'
+ },
   output: {
-    filename: 'app.js',
+    filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
+    clean: true,
   },
 };
