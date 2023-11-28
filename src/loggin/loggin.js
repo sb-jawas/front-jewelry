@@ -15,11 +15,8 @@ document.getElementById('aceptar').addEventListener('click', function() {
     let url = domain + "/api/login"; 
     asyncApiRequest("post", url, bodyContent).then(function(resRegister){
         console.log(resRegister);
-        
-        let usuario = resRegister;
-
-        console.log("HOLA");
+        sessionStorage.setItem("token",resRegister.token )
+        console.log(sessionStorage.getItem("token"));
     });
-
-    console.log("HOLA");
+    console.log("ADIOS");
 });
