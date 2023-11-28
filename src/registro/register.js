@@ -1,3 +1,4 @@
+import {asyncApiRequest} from "../utils/funcs.js"
 document.addEventListener('DOMContentLoaded', function () {
     console.log("El DOM está completamente cargado y parseado");
     
