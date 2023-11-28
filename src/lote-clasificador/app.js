@@ -1,4 +1,4 @@
-import { domain, asyncApiRequest, formatDate } from "../utils/funcs.js";
+import { domain, asyncApiRequest, formatDate, sendNotification } from "../utils/funcs.js";
 
 const table = document.getElementById("table");
 const tblBody = document.getElementById("tbody");
@@ -54,6 +54,14 @@ table.addEventListener("change", function (event) {
 });
 
 btnAsign.addEventListener("click", function () {
+  btnAsign.setAttribute("disabled","true")
+  let noti = document.getElementById("notification")
+
+  let loader = document.createElement("div")
+  loader.setAttribute("class","loader")
+  loader.setAttribute("id","loader")
+  noti.appendChild(loader)
+
   let i = 0;
   let arrLotes = [];
   while (i < asignCheck.length) {
@@ -71,7 +79,8 @@ btnAsign.addEventListener("click", function () {
   let url = domain + "/api/user/lote";
 
   asyncApiRequest(methodApi, url, bodyContent).then(function (data) {
-    console.log(data);
+    document.getElementById("loader").remove()
+    sendNotification(data.msg,"alert alert-success")
   });
 });
 
