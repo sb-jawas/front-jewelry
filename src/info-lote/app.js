@@ -9,7 +9,6 @@ let ubi = document.getElementById("ubi");
 let status = document.getElementById("status");
 let infoLote = document.getElementById("info-lote");
 let observation = document.getElementById("observation");
-let trTable = document.getElementById("trTable");
 
 let i = 1;
 let url = domain + "/api/componentes";
@@ -28,20 +27,46 @@ asyncApiRequest("GET", url).then(function (lote) {
 
   let userLocal = localStorage.getItem("userId");
   if (lote.user_id == userLocal) {
-
     let btnAdd = document.createElement("i");
     btnAdd.setAttribute("class", "bi bi-clipboard-plus-fill btn btn-success");
     btnAdd.id = "add-component";
-    
-    let th = document.createElement("th");
-    th.appendChild(btnAdd);
-    trTable.appendChild(th);
-    
-    let addComponent = document.getElementById("add-component");
+
+    let row = document.createElement("tr");
     let lista = createList(componentes);
-    addInsert(lista)
-    listenerBtnAdd(addComponent, lista);
-    
+    row.appendChild(createListCell(lista));
+    row.appendChild(createListCell(createInput()));
+    row.appendChild(createListCell(btnAdd));
+
+    tblBody.appendChild(row);
+
+    let addComponent = document.getElementById("add-component");
+    let listaDesplegable = document.getElementById("listaComponentes");
+    let inputCant = document.getElementById("inputCantidad");
+
+    listaDesplegable.addEventListener("input", function (event) {
+      btnClasificar.removeAttribute("disabled");
+      btnRechazar.removeAttribute("disabled");
+
+      inputCant.addEventListener("input", function (eventInput) {
+        let input = eventInput.target.value;
+        let i = 0;
+        while (i < event.target.length ) {
+          if (event.target[i].selected) {
+              let hiddenElement = event.target[i];
+              
+              let labelPieza = document.createElement("label");
+              labelPieza.textContent = event.target[i].text;
+              
+              let labelCantidad = document.createElement("label");
+              labelCantidad.textContent = input;
+              
+              listenerBtnAdd(addComponent, labelPieza, labelCantidad, hiddenElement);
+
+          }
+          i++;
+        }
+      });
+    });
   } else {
     let buttons = document.getElementsByName("btn");
     for (var i = 0, len = buttons.length; i != len; ++i) {
@@ -50,45 +75,31 @@ asyncApiRequest("GET", url).then(function (lote) {
   }
 });
 
-
-function listenerBtnAdd(addComponent, lista) {
-    addComponent.addEventListener("click", function () {
-    let inputCantidad = document.createElement("input");
-    inputCantidad.setAttribute("class", "form-control");
-    inputCantidad.setAttribute("type", "number");
-
-    let btnDelete = document.createElement("button");
-    btnDelete.setAttribute("class", "btn btn-danger");
-    btnDelete.setAttribute("name", "btnDelete");
-
-    let icon = document.createElement("i");
-    icon.setAttribute("class", "bi bi-trash3-fill");
-    icon.setAttribute("name", "icoDelete");
-
-    icon.setAttribute("id", i);
-    btnDelete.setAttribute("id", i);
-    
-
-    btnDelete.appendChild(icon);
-    let groupBtnDelete = document.getElementsByName("btnDelete");
-    let groupIcoDelete = document.getElementsByName("icoDelete");
+function listenerBtnAdd(
+  addComponent,
+  selectedLista,
+  inputCantidad,
+  hiddenElement
+) {
+  addComponent.addEventListener("click", function () {
+    hiddenElement.setAttribute("hidden", true);
+    hiddenElement.selected=false
+    let btnDelete = createBtnDelete();
 
     btnDelete.addEventListener("click", function (event) {
-      let z = event.target.id;
-      console.log(z)
-      document.getElementById(`td${z}`).remove()
+      let idBtn = event.target.id;
+      document.getElementById(`td${idBtn}`).remove();
     });
-    
-    let arr = [lista, inputCantidad, btnDelete];
+
+    let arr = [selectedLista, inputCantidad, btnDelete];
     addInsert(arr, i);
     i++;
-    disableOptionList()
   });
 }
 
 function addInsert(elements, id) {
   const row = document.createElement("tr");
-  row.setAttribute("id",`td${id}`)
+  row.setAttribute("id", `td${id}`);
   let cell = null;
   let i = 0;
   while (i < elements.length) {
@@ -100,89 +111,90 @@ function addInsert(elements, id) {
   tblBody.appendChild(row);
 }
 
-function disableOptionList() {
-  tblBody.addEventListener("change", function (event) {
-    btnClasificar.removeAttribute("disabled");
-    btnRechazar.removeAttribute("disabled");
-
-    let i = 0;
-    while (i < event.target.length) {
-      if (!event.target[i].selected) {
-        event.target[i].setAttribute("disabled",true)
-      }
-      i++;
-    }
-    return event.target;
-  });
-}
-
 function createList(componentes) {
+  let lista = document.createElement("select");
+  lista.setAttribute("class", "form-select");
+  lista.setAttribute("id", "listaComponentes");
+  lista.setAttribute("name", "listaComponentes");
 
-        let lista = document.createElement("select");
-        lista.setAttribute("class", "form-select");
-        lista.setAttribute("id", "listaComponentes");
-        lista.setAttribute("name", "listaComponentes");
-      
-        var option = document.createElement("option");
-        option.text = "Seleciona un componente";
-        option.setAttribute("disabled", true);
-        option.setAttribute("selected", true);
-        lista.appendChild(option);
-        componentes.then(function (resArr) {
-          let j = 0;
-          while (j < resArr.length) {
-            var option = document.createElement("option");
-            option.id = resArr[j].id;
-            option.text = `${resArr[j].name} - ${resArr[j].desc}`;
-            option.name = "listaComponentes";
-            lista.appendChild(option);
-            j++;
-          }
-        });
+  var option = document.createElement("option");
+  option.text = "Seleciona un componente";
+  option.setAttribute("disabled", true);
+  option.setAttribute("selected", true);
+  lista.appendChild(option);
+  componentes.then(function (resArr) {
+    let j = 0;
+    while (j < resArr.length) {
+      var option = document.createElement("option");
+      option.id = resArr[j].id;
+      option.text = `${resArr[j].name} - ${resArr[j].desc}`;
+      option.name = "listaComponentes";
+      lista.appendChild(option);
+      j++;
+    }
+    var option = document.createElement("option");
+    option.text = "Otro";
+    lista.appendChild(option);
+  });
 
   return lista;
 }
 
 btnClasificar.addEventListener("click", function () {
-    let listaSelected = document.getElementsByName("listaComponentes")
-    let arrIds = []
-    let j = 0
-    while(j<listaSelected.length){
-        let i = 0
-        while (i<listaSelected[j].length) {
-            if(listaSelected[j][i].selected){
-                arrIds.push(listaSelected[j][i].id)
-            }
-            i++
-        }
-        j++
+  let listaSelected = document.getElementsByName("listaComponentes");
+  let arrIds = [];
+  let j = 0;
+  while (j < listaSelected.length) {
+    let i = 0;
+    while (i < listaSelected[j].length) {
+      if (listaSelected[j][i].selected) {
+        arrIds.push(listaSelected[j][i].id);
+      }
+      i++;
     }
-    let loteId = localStorage.getItem("loteId")
-    let bodyContent = JSON.stringify({
-        "id":arrIds,
-        "cantidad":["2","2","2"],
-        "lote_id":loteId,
-        "user_id":"1"
-    });
-    let url = domain+"/api/lote/clasificador"
-    asyncApiRequest("POST",url,bodyContent).then(function(data){
-        console.log(data)
-    })
+    j++;
+  }
+  let loteId = localStorage.getItem("loteId");
+  let bodyContent = JSON.stringify({
+    id: arrIds,
+    cantidad: ["2", "2", "2"],
+    lote_id: loteId,
+    user_id: "1",
+  });
+  let url = domain + "/api/lote/clasificador";
+  asyncApiRequest("POST", url, bodyContent).then(function (data) {
+    console.log(data);
+  });
 
-    console.log(arrIds)
-
+  console.log(arrIds);
 });
 
-function listenerChangeComp(){   
-    let listaDesplegable = document.getElementById("listaComponentes")
-    
-    listaDesplegable.addEventListener("change",function(event){
-        let i = 0
-        while (i<event.target.length) {
-            if(event.target[i].selected){
-                console.log(event.target[i])
-            }
-            i++
-        }
-    })
+function createBtnDelete() {
+  let btnDelete = document.createElement("button");
+  btnDelete.setAttribute("class", "btn btn-danger");
+  btnDelete.setAttribute("name", "btnDelete");
+
+  let icon = document.createElement("i");
+  icon.setAttribute("class", "bi bi-trash3-fill");
+  icon.setAttribute("name", "icoDelete");
+
+  icon.setAttribute("id", i);
+  btnDelete.setAttribute("id", i);
+  btnDelete.appendChild(icon);
+
+  return btnDelete;
+}
+
+function createInput() {
+  let inputCantidad = document.createElement("input");
+  inputCantidad.setAttribute("class", "form-control");
+  inputCantidad.setAttribute("type", "number");
+  inputCantidad.setAttribute("id", "inputCantidad");
+  return inputCantidad;
+}
+
+function createListCell(element) {
+  const cell = document.createElement("td");
+  cell.appendChild(element);
+  return cell;
 }

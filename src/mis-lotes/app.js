@@ -1,12 +1,13 @@
 import { domain, asyncApiRequest, formatDate } from "../utils/funcs.js";
 
-const table = document.getElementById("table");
 const tblBody = document.getElementById("tbody");
-const btnAsign = document.getElementById("btn-asign");
-const asignCheck = document.getElementsByName("asign");
 
 let getUserLocal = localStorage.getItem("userId")
+let getRolUser = localStorage.getItem("rolId")
 let url = domain + "/api/mis-lotes/" + getUserLocal
+if(getRolUser==1){
+ url = domain + "/api/user/"+ getUserLocal +"/lotes"
+}
 let methodApi = "GET";
 
 asyncApiRequest(methodApi, url )
