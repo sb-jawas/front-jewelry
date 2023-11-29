@@ -1,5 +1,5 @@
-import { asyncApiRequest } from "../utils/funcs.js";
-import { domain } from "../utils/funcs.js";
+import { asyncApiRequest } from "./utils/funcs.js";
+import { domain } from "./utils/funcs.js";
 
 document.getElementById('aceptar').addEventListener('click', function() {
     console.log('Botón aceptar presionado');
