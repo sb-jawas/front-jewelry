@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="../../node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="style.css">
+   <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+
+    <title>Lote</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Adminstración de lotes</h1>
+        <div class="col-4">              
+          <div id="notification"></div>
+        </div>
+        <table class="table table-striped" id="table">
+            <thead>
+              <tr>
+                <th scope="col"><input type="checkbox" id="check-all"> Asignarme </th>
+                <th scope="col">#</th>
+                <th scope="col">Empresa colaboradora</th>
+                <th scope="col">Fecha de creación</th>
+                <th scope="col">Estado</th>
+              </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+          </table>
+          <button disabled class="btn btn-primary" id="btn-asign">Asignarme lotes</button>
+    </div>
+    <!-- <script src="../../dist/clasificador.js"></script> -->
+    <script type="module" src="app.js"></script>
+</body>
+
+</html>
