@@ -1,4 +1,4 @@
-export const domain = "http://localhost:8000";
+export const domain = "http://localhost:1234";
 
 export async function asyncApiRequest(methodApi, url, bodyContent) {
   let headersList = {
@@ -24,4 +24,24 @@ export function formatDate(date) {
 
   let fechaFormateada = dia + "/" + mes + "/" + year;
   return fechaFormateada;
+}
+
+
+export function sendNotification(message, type) {
+  let notification = document.getElementById("notification");
+
+  let getNoti = document.getElementById("noti");
+
+  let newP = null;
+
+  if (!getNoti) {
+    newP = document.createElement("p");
+    newP.setAttribute("id", "noti");
+  } else {
+    newP = getNoti;
+  }
+  notification.setAttribute("class", type);
+  notification.appendChild(newP);
+  newP.innerHTML = `<i class="bi bi-info-circle-fill"></i> ` + message;
+
 }
