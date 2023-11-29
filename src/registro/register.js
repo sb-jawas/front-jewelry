@@ -105,6 +105,8 @@ document.getElementById('confirmPassword').addEventListener('input', function ()
             let url = domain+"/api/users"
             asyncApiRequest("POST",url,bodyContent).then(function(resRegister){
             console.log(resRegister);
+            window.location.href = '../loggin/loggin.html';
+
     })
            
         } else {
