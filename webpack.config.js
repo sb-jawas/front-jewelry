@@ -1,14 +1,27 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: {
     lote: './src/lote/app.js',
     clasificador:'./src/lote-clasificador/app.js',
-    mislotes: './src/mis-lotes/app.js'
+    mislotes: './src/mis-lotes/app.js',
+    infolote: './src/info-lote/app.js'
  },
   output: {
     filename: '[name].js',
-    path: path.resolve(__dirname, 'dist'),
-    clean: true,
+    path: path.resolve(__dirname, './src/dist'),
+    // clean: true,
   },
+  devServer: {
+    static: path.resolve(__dirname,"./"),
+    port: 5555,
+    open: {
+      target: "./src/"
+    },
+    headers:{
+      'Access-Control-Allow-Origin':'*'
+    }
+  }
+
 };
