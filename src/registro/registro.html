@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,18 +14,25 @@
             <label for="newUsername">Nombre de la empresa (4-15 caracteres, solo letras, números y _):</label>
                     <input class="u-full-width" type="text" id="newUsername" required>
             <div id="usernameValidationMessage" class="validation-message"></div>
+
+            <label for="newNombreEmpresa">Nombre de la empresa:</label>
+                    <input type="text" id="newNombreEmpresa" required>
+                <div id="nombreEmpresaValidationMessage"></div>
+
             <label for="newPassword">Contraseña (6-12 caracteres, *, #, $ o . son especiales):</label>
                     <input class="u-full-width" type="password" id="newPassword" required>
             <div id="passwordValidationMessage" class="validation-message"></div>
+
             <label for="confirmPassword">Confirmación de Contraseña:</label>
                     <input class="u-full-width" type="password" id="confirmPassword" required>
             <div id="confirmPasswordValidationMessage" class="validation-message"></div>
+
             <label for="newEmail">Correo electrónico:</label>
             <input class="u-full-width" type="email" id="newEmail" required>
 
             <button class="button-primary" type="submit">Registrarse</button>
         </form>
     </div>
-    <script src="register.js"></script>
+    <script src="register.js" type="module"></script>
 </body>
 </html>
