@@ -1,4 +1,4 @@
-import { domain, asyncApiRequest, formatDate } from "../utils/funcs.js";
+import { domain, asyncApiRequest, formatDate, sendNotification } from "../utils/funcs.js";
 
 const table = document.getElementById("table");
 const tblBody = document.getElementById("tbody");
@@ -10,7 +10,6 @@ let status = document.getElementById("status");
 let infoLote = document.getElementById("info-lote");
 let observation = document.getElementById("observation");
 
-let i = 1;
 let url = domain + "/api/componentes";
 let componentes = asyncApiRequest("GET", url).then(function (resComp) {
   return resComp;
@@ -26,7 +25,9 @@ asyncApiRequest("GET", url).then(function (lote) {
   observation.textContent = "Observación: " + lote.observation;
 
   let userLocal = localStorage.getItem("userId");
-  if (lote.user_id == userLocal) {
+  console.log(lote);
+  console.log(userLocal);
+  if (true) {
     let btnAdd = document.createElement("i");
     btnAdd.setAttribute("class", "bi bi-clipboard-plus-fill btn btn-success");
     btnAdd.id = "add-component";
@@ -39,34 +40,55 @@ asyncApiRequest("GET", url).then(function (lote) {
 
     tblBody.appendChild(row);
 
-    let addComponent = document.getElementById("add-component");
-    let listaDesplegable = document.getElementById("listaComponentes");
-    let inputCant = document.getElementById("inputCantidad");
+    let j= 2
 
-    listaDesplegable.addEventListener("input", function (event) {
-      btnClasificar.removeAttribute("disabled");
-      btnRechazar.removeAttribute("disabled");
+    let componente = document.getElementById("listaComponentes");
+    let cantidad = document.getElementById("inputCantidad");
 
-      inputCant.addEventListener("input", function (eventInput) {
-        let input = eventInput.target.value;
-        let i = 0;
-        while (i < event.target.length ) {
-          if (event.target[i].selected) {
-              let hiddenElement = event.target[i];
-              
-              let labelPieza = document.createElement("label");
-              labelPieza.textContent = event.target[i].text;
-              
-              let labelCantidad = document.createElement("label");
-              labelCantidad.textContent = input;
-              
-              listenerBtnAdd(addComponent, labelPieza, labelCantidad, hiddenElement);
+    btnAdd.addEventListener('click',function(){
+      let i = 1
 
-          }
-          i++;
+      let check = true
+      while(i<componente.length && check){
+        if(componente[i].selected){
+          check = false
         }
-      });
-    });
+        i++
+      }
+      if(check){
+        sendNotification("No has selecionado un componente", "alert alert-danger")
+
+      }else if(cantidad.value.length == 0){
+      sendNotification("No ha introducido una cantidad al componente", "alert alert-danger")
+
+      }else{
+        btnClasificar.removeAttribute("disabled");
+        btnRechazar.removeAttribute("disabled");
+        
+        let row = table.insertRow();
+        row.setAttribute("id", `td${i}`);
+        
+        let celdaComponente = row.insertCell(0);
+        let celdaCantidad = row.insertCell(1);
+        let btnDelete = row.insertCell(2);
+        
+        
+        celdaComponente.innerHTML = componente.value;
+        celdaCantidad.innerHTML = cantidad.value;
+        
+        
+        btnDelete.appendChild(createBtnDelete(i));
+        
+        btnDelete.addEventListener("click", function (event) {
+          let z = event.target.id;
+          console.log(z)
+          document.getElementById(`td${z}`).remove()
+        });
+        j++;
+      }
+     
+    })
+
   } else {
     let buttons = document.getElementsByName("btn");
     for (var i = 0, len = buttons.length; i != len; ++i) {
@@ -75,40 +97,8 @@ asyncApiRequest("GET", url).then(function (lote) {
   }
 });
 
-function listenerBtnAdd(
-  addComponent,
-  selectedLista,
-  inputCantidad,
-  hiddenElement
-) {
-  addComponent.addEventListener("click", function () {
-    hiddenElement.setAttribute("hidden", true);
-    hiddenElement.selected=false
-    let btnDelete = createBtnDelete();
-
-    btnDelete.addEventListener("click", function (event) {
-      let idBtn = event.target.id;
-      document.getElementById(`td${idBtn}`).remove();
-    });
-
-    let arr = [selectedLista, inputCantidad, btnDelete];
-    addInsert(arr, i);
-    i++;
-  });
-}
-
-function addInsert(elements, id) {
-  const row = document.createElement("tr");
-  row.setAttribute("id", `td${id}`);
-  let cell = null;
-  let i = 0;
-  while (i < elements.length) {
-    cell = document.createElement("td");
-    cell.appendChild(elements[i]);
-    row.appendChild(cell);
-    i++;
-  }
-  tblBody.appendChild(row);
+function eliminarFila(id) {
+  table.deleteRow(id)
 }
 
 function createList(componentes) {
@@ -169,7 +159,7 @@ btnClasificar.addEventListener("click", function () {
   console.log(arrIds);
 });
 
-function createBtnDelete() {
+function createBtnDelete(i) {
   let btnDelete = document.createElement("button");
   btnDelete.setAttribute("class", "btn btn-danger");
   btnDelete.setAttribute("name", "btnDelete");
@@ -181,6 +171,7 @@ function createBtnDelete() {
   icon.setAttribute("id", i);
   btnDelete.setAttribute("id", i);
   btnDelete.appendChild(icon);
+
 
   return btnDelete;
 }
