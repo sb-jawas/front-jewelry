@@ -28,7 +28,7 @@ asyncApiRequest("GET", url).then(function (lote) {
   console.log(lote);
   console.log(userLocal);
   if (true) {
-    let btnAdd = document.createElement("i");
+    let btnAdd = document.createElement("button");
     btnAdd.setAttribute("class", "bi bi-clipboard-plus-fill btn btn-success");
     btnAdd.id = "add-component";
 
@@ -44,6 +44,11 @@ asyncApiRequest("GET", url).then(function (lote) {
 
     let componente = document.getElementById("listaComponentes");
     let cantidad = document.getElementById("inputCantidad");
+
+    componente.addEventListener('change',function(){
+      btnAdd.disabled = false
+    })
+
 
     btnAdd.addEventListener('click',function(){
       let i = 1
@@ -64,6 +69,14 @@ asyncApiRequest("GET", url).then(function (lote) {
       }else{
         btnClasificar.removeAttribute("disabled");
         btnRechazar.removeAttribute("disabled");
+
+        let i = 0
+        while(i<componente.length){
+          if(componente[i].selected){
+            componente[i].hidden = true
+          }
+          i++
+        }
         
         let row = table.insertRow();
         row.setAttribute("id", `td${i}`);
@@ -81,12 +94,13 @@ asyncApiRequest("GET", url).then(function (lote) {
         
         btnDelete.addEventListener("click", function (event) {
           let z = event.target.id;
-          console.log(z)
           document.getElementById(`td${z}`).remove()
         });
         j++;
       }
      
+      btnAdd.disabled = true
+ 
     })
 
   } else {
