@@ -1,4 +1,6 @@
-import { domain, asyncApiRequest, formatDate } from "../utils/funcs.js";
+import { domain, asyncApiRequest, formatDate, sendNotification, switchThem, changeMode } from "../utils/funcs.js";
+import { redirect } from "../utils/routes.js";
+
 
 const table = document.getElementById("table");
 const tblBody = document.getElementById("tbody");
@@ -10,7 +12,6 @@ let status = document.getElementById("status");
 let infoLote = document.getElementById("info-lote");
 let observation = document.getElementById("observation");
 
-let i = 1;
 let url = domain + "/api/componentes";
 let componentes = asyncApiRequest("GET", url).then(function (resComp) {
   return resComp;
@@ -26,8 +27,8 @@ asyncApiRequest("GET", url).then(function (lote) {
   observation.textContent = "Observación: " + lote.observation;
 
   let userLocal = localStorage.getItem("userId");
-  if (lote.user_id == userLocal) {
-    let btnAdd = document.createElement("i");
+  if (true) {
+    let btnAdd = document.createElement("button");
     btnAdd.setAttribute("class", "bi bi-clipboard-plus-fill btn btn-success");
     btnAdd.id = "add-component";
 
@@ -39,34 +40,99 @@ asyncApiRequest("GET", url).then(function (lote) {
 
     tblBody.appendChild(row);
 
-    let addComponent = document.getElementById("add-component");
-    let listaDesplegable = document.getElementById("listaComponentes");
-    let inputCant = document.getElementById("inputCantidad");
+    let j= 2
 
-    listaDesplegable.addEventListener("input", function (event) {
-      btnClasificar.removeAttribute("disabled");
-      btnRechazar.removeAttribute("disabled");
+    let componente = document.getElementById("listaComponentes");
+    let cantidad = document.getElementById("inputCantidad");
 
-      inputCant.addEventListener("input", function (eventInput) {
-        let input = eventInput.target.value;
-        let i = 0;
-        while (i < event.target.length ) {
-          if (event.target[i].selected) {
-              let hiddenElement = event.target[i];
-              
-              let labelPieza = document.createElement("label");
-              labelPieza.textContent = event.target[i].text;
-              
-              let labelCantidad = document.createElement("label");
-              labelCantidad.textContent = input;
-              
-              listenerBtnAdd(addComponent, labelPieza, labelCantidad, hiddenElement);
+    cantidad.addEventListener('input',function(event){
+      if(event.target.value<=0){
+        cantidad.value = ""
+      }
+
+    })
+    componente.addEventListener('change',function(){
+      
+      let z = 1
+      while(z<componente.length){
+        if(componente[z].text == "Otro" && componente[z].selected){
+          window.location.href = redirect["componentes"]
+        }
+        z++
+      }
+      btnAdd.disabled = false
+    })
+
+
+    btnAdd.addEventListener('click',function(){
+      let i = 1
+
+      let check = true
+      while(i<=componente.length && check){
+        if(componente[i].selected){
+          check = false
+        }
+        i++
+      }
+      if(check){
+        sendNotification("No has selecionado un componente", "alert alert-danger")
+
+      }else if(cantidad.value.length == 0){
+      sendNotification("No ha introducido una cantidad al componente", "alert alert-danger")
+
+      }else{
+        btnClasificar.removeAttribute("disabled");
+        btnRechazar.disabled = true;
+
+        let z = 0
+        let check = true
+        while(z<=componente.length && check){
+          if(!componente[z].hidden && !componente[z].disabled &&  componente[z].selected){
+            console.log(componente[z].id)
+            componente[z].hidden = true
+            componente[z].selected = true
+            check = false
+          }
+          z++
+        }
+        
+        let row = table.insertRow();
+        row.setAttribute("id", `td${i}`);
+        
+        let celdaComponente = row.insertCell(0);
+        let celdaCantidad = row.insertCell(1);
+        let btnDelete = row.insertCell(2);
+                
+        celdaComponente.innerHTML = componente.value;
+        console.log(componente[z-1].id)
+        celdaComponente.id = componente[z-1].id
+        celdaCantidad.innerHTML = cantidad.value;
+        celdaCantidad.setAttribute("name","inputCantidad")
+        
+        btnDelete.appendChild(createBtnDelete(i));
+        
+        btnDelete.addEventListener("click", function (event) {
+          btnAdd.disabled = false
+          let z = event.target.id;
+          let idComp =  document.getElementById(`td${z}`).childNodes[0].id
+          componente[idComp].removeAttribute("hidden")
+          componente[0].selected = true
+          document.getElementById(`td${z}`).remove()
+
+          if(tblBody.childNodes.length<=2){
+            btnRechazar.removeAttribute("disabled");
+            btnClasificar.disabled = true;
 
           }
-          i++;
-        }
-      });
-    });
+
+        });
+        j++;
+        btnAdd.disabled = true
+      }
+     
+ 
+    })
+
   } else {
     let buttons = document.getElementsByName("btn");
     for (var i = 0, len = buttons.length; i != len; ++i) {
@@ -75,40 +141,8 @@ asyncApiRequest("GET", url).then(function (lote) {
   }
 });
 
-function listenerBtnAdd(
-  addComponent,
-  selectedLista,
-  inputCantidad,
-  hiddenElement
-) {
-  addComponent.addEventListener("click", function () {
-    hiddenElement.setAttribute("hidden", true);
-    hiddenElement.selected=false
-    let btnDelete = createBtnDelete();
-
-    btnDelete.addEventListener("click", function (event) {
-      let idBtn = event.target.id;
-      document.getElementById(`td${idBtn}`).remove();
-    });
-
-    let arr = [selectedLista, inputCantidad, btnDelete];
-    addInsert(arr, i);
-    i++;
-  });
-}
-
-function addInsert(elements, id) {
-  const row = document.createElement("tr");
-  row.setAttribute("id", `td${id}`);
-  let cell = null;
-  let i = 0;
-  while (i < elements.length) {
-    cell = document.createElement("td");
-    cell.appendChild(elements[i]);
-    row.appendChild(cell);
-    i++;
-  }
-  tblBody.appendChild(row);
+function eliminarFila(id) {
+  table.deleteRow(id)
 }
 
 function createList(componentes) {
@@ -119,8 +153,9 @@ function createList(componentes) {
 
   var option = document.createElement("option");
   option.text = "Seleciona un componente";
-  option.setAttribute("disabled", true);
-  option.setAttribute("selected", true);
+  option.id = "select"
+  option.disabled=  true;
+  option.selected=  true;
   lista.appendChild(option);
   componentes.then(function (resArr) {
     let j = 0;
@@ -142,34 +177,40 @@ function createList(componentes) {
 
 btnClasificar.addEventListener("click", function () {
   let listaSelected = document.getElementsByName("listaComponentes");
+  let inputCantidad = document.getElementsByName("inputCantidad");
   let arrIds = [];
+  let arrCant = [];
   let j = 0;
   while (j < listaSelected.length) {
     let i = 0;
     while (i < listaSelected[j].length) {
-      if (listaSelected[j][i].selected) {
+      if (listaSelected[j][i].hidden) {
         arrIds.push(listaSelected[j][i].id);
+        arrCant.push(inputCantidad[j].textContent)
       }
       i++;
     }
     j++;
   }
+
+
   let loteId = localStorage.getItem("loteId");
   let bodyContent = JSON.stringify({
     id: arrIds,
-    cantidad: ["2", "2", "2"],
+    cantidad: arrCant,
     lote_id: loteId,
     user_id: "1",
   });
   let url = domain + "/api/lote/clasificador";
   asyncApiRequest("POST", url, bodyContent).then(function (data) {
-    console.log(data);
+
+     sendNotification(data.message, "alert alert-success")
   });
 
   console.log(arrIds);
 });
 
-function createBtnDelete() {
+function createBtnDelete(i) {
   let btnDelete = document.createElement("button");
   btnDelete.setAttribute("class", "btn btn-danger");
   btnDelete.setAttribute("name", "btnDelete");
@@ -181,6 +222,7 @@ function createBtnDelete() {
   icon.setAttribute("id", i);
   btnDelete.setAttribute("id", i);
   btnDelete.appendChild(icon);
+
 
   return btnDelete;
 }
@@ -198,3 +240,18 @@ function createListCell(element) {
   cell.appendChild(element);
   return cell;
 }
+btnRechazar.addEventListener('click',function(){
+  let getLocalId = localStorage.getItem("loteId")
+  let url = domain + "/api/lote/"+getLocalId+"/rechazar"
+  let method = "GET"
+  asyncApiRequest(method, url).then(function(){
+    sendNotification("El lote ha sido rechazado","alert alert-warning")
+  })
+})
+
+let switcher = document.getElementById("switcher")
+
+switcher.addEventListener('change',function(event){
+  console.log(event.target.checked)
+  // changeMode()
+})
