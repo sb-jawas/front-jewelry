@@ -1,4 +1,5 @@
 import { domain, asyncApiRequest, formatDate, sendNotification } from "../utils/funcs.js";
+import { redirect } from "../utils/routes.js";
 
 const table = document.getElementById("table");
 const tblBody = document.getElementById("tbody");
@@ -25,8 +26,6 @@ asyncApiRequest("GET", url).then(function (lote) {
   observation.textContent = "Observación: " + lote.observation;
 
   let userLocal = localStorage.getItem("userId");
-  console.log(lote);
-  console.log(userLocal);
   if (true) {
     let btnAdd = document.createElement("button");
     btnAdd.setAttribute("class", "bi bi-clipboard-plus-fill btn btn-success");
@@ -45,7 +44,21 @@ asyncApiRequest("GET", url).then(function (lote) {
     let componente = document.getElementById("listaComponentes");
     let cantidad = document.getElementById("inputCantidad");
 
+    cantidad.addEventListener('input',function(event){
+      if(event.target.value<=0){
+        cantidad.value = ""
+      }
+
+    })
     componente.addEventListener('change',function(){
+      
+      let z = 1
+      while(z<componente.length){
+        if(componente[z].text == "Otro" && componente[z].selected){
+          window.location.href = redirect["componentes"]
+        }
+        z++
+      }
       btnAdd.disabled = false
     })
 
@@ -54,7 +67,7 @@ asyncApiRequest("GET", url).then(function (lote) {
       let i = 1
 
       let check = true
-      while(i<componente.length && check){
+      while(i<=componente.length && check){
         if(componente[i].selected){
           check = false
         }
@@ -70,12 +83,16 @@ asyncApiRequest("GET", url).then(function (lote) {
         btnClasificar.removeAttribute("disabled");
         btnRechazar.removeAttribute("disabled");
 
-        let i = 0
-        while(i<componente.length){
-          if(componente[i].selected){
-            componente[i].hidden = true
+        let z = 0
+        let check = true
+        while(z<=componente.length && check){
+          if(!componente[z].hidden && !componente[z].disabled &&  componente[z].selected){
+            console.log(componente[z].id)
+            componente[z].hidden = true
+            componente[z].selected = true
+            check = false
           }
-          i++
+          z++
         }
         
         let row = table.insertRow();
@@ -84,22 +101,28 @@ asyncApiRequest("GET", url).then(function (lote) {
         let celdaComponente = row.insertCell(0);
         let celdaCantidad = row.insertCell(1);
         let btnDelete = row.insertCell(2);
-        
-        
+                
         celdaComponente.innerHTML = componente.value;
+        console.log(componente[z-1].id)
+        celdaComponente.id = componente[z-1].id
         celdaCantidad.innerHTML = cantidad.value;
-        
+        celdaCantidad.setAttribute("name","inputCantidad")
         
         btnDelete.appendChild(createBtnDelete(i));
         
         btnDelete.addEventListener("click", function (event) {
+          btnAdd.disabled = false
           let z = event.target.id;
+          let idComp =  document.getElementById(`td${z}`).childNodes[0].id
+          componente[idComp].removeAttribute("hidden")
+          componente[0].selected = true
           document.getElementById(`td${z}`).remove()
+
         });
         j++;
+        btnAdd.disabled = true
       }
      
-      btnAdd.disabled = true
  
     })
 
@@ -123,8 +146,9 @@ function createList(componentes) {
 
   var option = document.createElement("option");
   option.text = "Seleciona un componente";
-  option.setAttribute("disabled", true);
-  option.setAttribute("selected", true);
+  option.id = "select"
+  option.disabled=  true;
+  option.selected=  true;
   lista.appendChild(option);
   componentes.then(function (resArr) {
     let j = 0;
@@ -146,28 +170,34 @@ function createList(componentes) {
 
 btnClasificar.addEventListener("click", function () {
   let listaSelected = document.getElementsByName("listaComponentes");
+  let inputCantidad = document.getElementsByName("inputCantidad");
   let arrIds = [];
+  let arrCant = [];
   let j = 0;
   while (j < listaSelected.length) {
     let i = 0;
     while (i < listaSelected[j].length) {
-      if (listaSelected[j][i].selected) {
+      if (listaSelected[j][i].hidden) {
         arrIds.push(listaSelected[j][i].id);
+        arrCant.push(inputCantidad[j].textContent)
       }
       i++;
     }
     j++;
   }
+
+
   let loteId = localStorage.getItem("loteId");
   let bodyContent = JSON.stringify({
     id: arrIds,
-    cantidad: ["2", "2", "2"],
+    cantidad: arrCant,
     lote_id: loteId,
     user_id: "1",
   });
   let url = domain + "/api/lote/clasificador";
   asyncApiRequest("POST", url, bodyContent).then(function (data) {
-    console.log(data);
+
+     sendNotification(data.message, "alert alert-success")
   });
 
   console.log(arrIds);
