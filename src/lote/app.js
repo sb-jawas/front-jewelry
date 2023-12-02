@@ -24,7 +24,7 @@ btn.addEventListener('click',function(){
         setTimeout(() => {
             location.reload();
         }, 5000);
-        
+
     }).catch(function(error){
         console.log(error)
     })
@@ -35,9 +35,9 @@ async function newLote(datos){
     let headersList = {
         "Content-Type": "application/json"
     }
-    
+    let getLocalUbi = localStorage.getItem("ubi")
     let bodyContent = JSON.stringify({
-        "ubi":datos[0],
+        "ubi":getLocalUbi,
         "observation":datos[1],
         "user_id":datos[2]
     });
