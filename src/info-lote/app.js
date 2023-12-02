@@ -1,5 +1,6 @@
-import { domain, asyncApiRequest, formatDate, sendNotification } from "../utils/funcs.js";
+import { domain, asyncApiRequest, formatDate, sendNotification, switchThem, changeMode } from "../utils/funcs.js";
 import { redirect } from "../utils/routes.js";
+
 
 const table = document.getElementById("table");
 const tblBody = document.getElementById("tbody");
@@ -81,7 +82,7 @@ asyncApiRequest("GET", url).then(function (lote) {
 
       }else{
         btnClasificar.removeAttribute("disabled");
-        btnRechazar.removeAttribute("disabled");
+        btnRechazar.disabled = true;
 
         let z = 0
         let check = true
@@ -117,6 +118,12 @@ asyncApiRequest("GET", url).then(function (lote) {
           componente[idComp].removeAttribute("hidden")
           componente[0].selected = true
           document.getElementById(`td${z}`).remove()
+
+          if(tblBody.childNodes.length<=2){
+            btnRechazar.removeAttribute("disabled");
+            btnClasificar.disabled = true;
+
+          }
 
         });
         j++;
@@ -233,3 +240,18 @@ function createListCell(element) {
   cell.appendChild(element);
   return cell;
 }
+btnRechazar.addEventListener('click',function(){
+  let getLocalId = localStorage.getItem("loteId")
+  let url = domain + "/api/lote/"+getLocalId+"/rechazar"
+  let method = "GET"
+  asyncApiRequest(method, url).then(function(){
+    sendNotification("El lote ha sido rechazado","alert alert-warning")
+  })
+})
+
+let switcher = document.getElementById("switcher")
+
+switcher.addEventListener('change',function(event){
+  console.log(event.target.checked)
+  // changeMode()
+})
