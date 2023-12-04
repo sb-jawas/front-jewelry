@@ -71,16 +71,30 @@ btnAsign.addEventListener("click", function () {
     i++;
   }
   let bodyContent = JSON.stringify({
-    lote_id: arrLotes,
-    user_id: getUserLocal,
+    lote_id: arrLotes
   });
-
+  let getUserLocal = localStorage.getItem("userId")
   let methodApi = "POST";
-  let url = domain + "/api/user/lote";
+  let url = domain + "/api/user/"+getUserLocal+"/asign";
 
   asyncApiRequest(methodApi, url, bodyContent).then(function (data) {
     document.getElementById("loader").remove()
     sendNotification(data.msg,"alert alert-success")
+  }).catch(function(error){
+    document.getElementById("loader").remove()
+    
+    let rtnMessge = ""
+
+    console.log(error)
+
+    let i = 0
+    while(i<error.msg){
+      rtnMessge += `<li>${error.msg[i]}</li>`
+      i++
+    }
+    console.log(rtnMessge)
+    sendNotification(rtnMessge,"alert alert-danger")
+
   });
 });
 
