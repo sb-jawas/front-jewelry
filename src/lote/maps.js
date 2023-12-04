@@ -23,7 +23,8 @@ function initMap() {
   });
   geocoder = new google.maps.Geocoder();
 
-  const inputText = document.getElementById("ubi");
+  let obs = document.getElementById("obs");
+  let inputText = document.getElementById("ubi");
 
   inputText.type = "text";
   inputText.placeholder = "Enter a location";
@@ -39,9 +40,13 @@ function initMap() {
     let placeId = localStorage.getItem("placeId")
     await infoPlace(placeId)
   });
-  submitButton.addEventListener("click", () =>
-    geocode({ address: inputText.value })
-  );
+
+  submitButton.addEventListener("click", () =>{
+    if (inputText.value.length > 1 && obs.value.length > 1) {
+      geocode({ address: inputText.value })
+    }
+  });
+
   clearButton.addEventListener("click", () => {
     clear();
     document.getElementById("ubi").value = "";
@@ -70,7 +75,7 @@ export function geocode(request) {
       return results;
     })
     .catch((e) => {
-      alert("Geocode was not successful for the following reason: " + e);
+      sendNotification("Ha introducido una dirección inválida", "alert alert-danger");
     });
 }
 
