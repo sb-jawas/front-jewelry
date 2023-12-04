@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="../../node_modules/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 
     <title>Lote | Clasificación</title>
 </head>
@@ -28,12 +29,12 @@
         <h4 id="ubi">Ubicación: No se ha podido cargar la ubicación del lote</h4>
         <h4 id="observation">Observacion: No se ha podido cargar la observación del lote</h4>
         <h4 id="status">Estado: No se ha podido cargar el estado del lote</h4>
-
+        <div id="clasificado"></div>
 
         <div class="col-md-6">
 
             <table class="table table-striped" id="table">
-                <thead>
+                <thead id="thead">
                     <tr id="trTable">
                         <th scope="col">Componentes</th>
                         <th scope="col">Cantidad</th>
