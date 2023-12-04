@@ -1,4 +1,5 @@
 import { cargarLote } from "../http/info-lote.js";
+import { sendNotification } from "../utils/funcs.js";
 
 const table = document.getElementById("table");
 
