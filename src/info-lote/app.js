@@ -35,7 +35,8 @@ asyncApiRequest("GET", url).then(function (lote) {
     let row = document.createElement("tr");
     let lista = createList(componentes);
     row.appendChild(createListCell(lista));
-    row.appendChild(createListCell(createInput()));
+    row.appendChild(createListCell(createInput("number")));
+    row.appendChild(createListCell(createInput("text")));
     row.appendChild(createListCell(btnAdd));
 
     tblBody.appendChild(row);
@@ -44,6 +45,7 @@ asyncApiRequest("GET", url).then(function (lote) {
 
     let componente = document.getElementById("listaComponentes");
     let cantidad = document.getElementById("inputCantidad");
+    let observation = document.getElementById("inputObservation");
 
     cantidad.addEventListener('input',function(event){
       if(event.target.value<=0){
@@ -101,13 +103,16 @@ asyncApiRequest("GET", url).then(function (lote) {
         
         let celdaComponente = row.insertCell(0);
         let celdaCantidad = row.insertCell(1);
-        let btnDelete = row.insertCell(2);
+        let celdaObservation = row.insertCell(2);
+
+        let btnDelete = row.insertCell(3);
                 
         celdaComponente.innerHTML = componente.value;
-        console.log(componente[z-1].id)
         celdaComponente.id = componente[z-1].id
         celdaCantidad.innerHTML = cantidad.value;
         celdaCantidad.setAttribute("name","inputCantidad")
+        celdaObservation.innerHTML = observation.value;
+        celdaObservation.setAttribute("name","inputObservation")
         
         btnDelete.appendChild(createBtnDelete(i));
         
@@ -178,33 +183,42 @@ function createList(componentes) {
 btnClasificar.addEventListener("click", function () {
   let listaSelected = document.getElementsByName("listaComponentes");
   let inputCantidad = document.getElementsByName("inputCantidad");
+  let inputObservation =  document.getElementsByName("inputObservation");
   let arrIds = [];
   let arrCant = [];
-  let j = 0;
-  while (j < listaSelected.length) {
-    let i = 0;
-    while (i < listaSelected[j].length) {
-      if (listaSelected[j][i].hidden) {
-        arrIds.push(listaSelected[j][i].id);
-        arrCant.push(inputCantidad[j].textContent)
+  let arrObs = [];
+  let i = 0;
+
+  while (i < listaSelected.length) {
+    let j = 0;
+
+    while (j < listaSelected[i].length) {
+      if (listaSelected[i][j].hidden) {
+        arrIds.push(listaSelected[i][j].id);
+        arrCant.push(inputCantidad[i].textContent)
       }
-      i++;
+      j++;
     }
-    j++;
+    i++;
   }
 
+  let z = 0
+  while(z<inputObservation.length){
+    arrObs.push(inputObservation[z].textContent)
+    z++
+  }
 
   let loteId = localStorage.getItem("loteId");
   let bodyContent = JSON.stringify({
     id: arrIds,
     cantidad: arrCant,
-    lote_id: loteId,
+    observation: arrObs,
     user_id: "1",
   });
-  let url = domain + "/api/lote/clasificador";
+  let url = domain + "/api/lote/"+ loteId +"/clasificar";
   asyncApiRequest("POST", url, bodyContent).then(function (data) {
 
-     sendNotification(data.message, "alert alert-success")
+     sendNotification(data.message, "alert alert-success") 
   });
 
   console.log(arrIds);
@@ -227,11 +241,16 @@ function createBtnDelete(i) {
   return btnDelete;
 }
 
-function createInput() {
+function createInput(type) {
   let inputCantidad = document.createElement("input");
   inputCantidad.setAttribute("class", "form-control");
-  inputCantidad.setAttribute("type", "number");
-  inputCantidad.setAttribute("id", "inputCantidad");
+  inputCantidad.setAttribute("type", type);
+  if(type=="number"){
+    inputCantidad.setAttribute("id", "inputCantidad");
+  }else{
+    inputCantidad.setAttribute("id", "inputObservation");
+
+  }
   return inputCantidad;
 }
 
