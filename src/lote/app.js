@@ -1,10 +1,8 @@
-import { sendNotification } from "../utils/funcs.js"
+import { sendNotification, domain } from "../utils/funcs.js"
 
 let obs = document.getElementById("obs")
 let ubi = document.getElementById("ubi")
 let btn = document.getElementById("btn")
-
-const domain = "http://localhost:1234"
 
 btn.addEventListener('click',function(){
     btn.setAttribute("disabled","true")

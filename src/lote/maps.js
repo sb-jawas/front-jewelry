@@ -53,7 +53,7 @@ function clear() {
   marker.setMap(null);
 }
 
-function geocode(request) {
+export function geocode(request) {
   clear();
   geocoder
     .geocode(request)
