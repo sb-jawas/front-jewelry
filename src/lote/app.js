@@ -1,10 +1,8 @@
-import { sendNotification } from "../utils/funcs.js"
+import { sendNotification, domain } from "../utils/funcs.js"
 
 let obs = document.getElementById("obs")
 let ubi = document.getElementById("ubi")
 let btn = document.getElementById("btn")
-
-const domain = "http://localhost:1234"
 
 btn.addEventListener('click',function(){
     btn.setAttribute("disabled","true")
@@ -24,7 +22,7 @@ btn.addEventListener('click',function(){
         setTimeout(() => {
             location.reload();
         }, 5000);
-        
+
     }).catch(function(error){
         console.log(error)
     })
@@ -35,9 +33,9 @@ async function newLote(datos){
     let headersList = {
         "Content-Type": "application/json"
     }
-    
+    let getLocalUbi = localStorage.getItem("ubi")
     let bodyContent = JSON.stringify({
-        "ubi":datos[0],
+        "ubi":getLocalUbi,
         "observation":datos[1],
         "user_id":datos[2]
     });
