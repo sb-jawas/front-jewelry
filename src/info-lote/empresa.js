@@ -20,12 +20,12 @@ export function mainEmpresa(lote){
 
                 let url = domain + "/api/empresa/mis-lotes/"+getUserLocal+"/cancelar"
                 let bodyContent = JSON.stringify({
-                    "lote_id": 1
+                    "lote_id": getLoteLocal
                   });
                 
-                asyncApiRequest("POST",url, bodyContent)
+                asyncApiRequest("PUT",url, bodyContent)
                 .then(function(){
-                    sendNotification("Lote cancelado","alert alert-sucess")
+                    sendNotification("Lote cancelado","alert alert-success")
                 })
                 .catch(function(error){
                     console.log(error)
