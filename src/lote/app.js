@@ -47,9 +47,11 @@ export async function newLote(datos) {
   let headersList = {
     "Content-Type": "application/json",
   };
-  let getLocalUbi = localStorage.getItem("ubi");
+  let lat = localStorage.getItem("lat");
+  let long = localStorage.getItem("long");
+
   let bodyContent = JSON.stringify({
-    ubi: getLocalUbi,
+    ubi: [lat, long],
     observation: datos[1],
     user_id: datos[2],
   });

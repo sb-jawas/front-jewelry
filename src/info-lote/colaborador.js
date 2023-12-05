@@ -4,6 +4,7 @@ import {
   asyncApiRequest,
   sendNotification,
   deleteButtons,
+  createListCell
 } from "../utils/funcs.js";
 import { redirect } from "../utils/routes.js";
 
@@ -189,11 +190,7 @@ function createInput(type) {
   return inputCantidad;
 }
 
-function createListCell(element) {
-  const cell = document.createElement("td");
-  cell.appendChild(element);
-  return cell;
-}
+
 
 function listenerBtnClasificar(btnClasificar){
   btnClasificar.addEventListener("click", function () {
