@@ -1,3 +1,6 @@
+import { sendNotification } from "../utils/funcs.js";
+import { newLote } from "./app.js";
+
 /**
  * @license
  * Copyright 2019 Google LLC. All Rights Reserved.
@@ -42,14 +45,46 @@ function initMap() {
   });
 
   submitButton.addEventListener("click", () =>{
-    if (inputText.value.length > 1 && obs.value.length > 1) {
       geocode({ address: inputText.value })
-    }
+      let getChecked = document.getElementById("checked").id
+      console.log(checked)
+    if (ubi.value.length > 1 && obs.value.length > 1 && getChecked != null) {
+      btn.setAttribute("disabled", "true");
+
+      let noti = document.getElementById("notification");
+
+      let loader = document.createElement("div");
+      loader.setAttribute("class", "loader");
+      loader.setAttribute("id", "loader");
+      noti.appendChild(loader);
+      
+      let getUserLocal = localStorage.getItem("userId");
+      let arr = [ubi.value, obs.value, getUserLocal];
+      
+
+    newLote(arr)
+      .then(function (res) {
+        document.getElementById("loader").remove();
+        sendNotification(res.status, "alert alert-success");
+
+        setTimeout(() => {
+          location.reload();
+        }, 5000);
+      });
+  } else {
+    sendNotification(
+      "Es obligatorio rellenar ambos campos",
+      "alert alert-danger"
+    );
+  }
+
   });
 
   clearButton.addEventListener("click", () => {
     clear();
     document.getElementById("ubi").value = "";
+    document.getElementById("obs").value = "";
+    
   });
   
 }
@@ -72,9 +107,15 @@ export function geocode(request) {
       localStorage.setItem("ubi", `${results[0].geometry.location}`);
       localStorage.setItem("placeId",`${results[0].place_id}`)
       document.getElementById("ubi").value = `${results[0].formatted_address}`;
+      localStorage.setItem("check", JSON.stringify("true"))
+      let checked = document.createElement("div")
+      checked.id = "checked"
+      document.body.appendChild(checked)
       return results;
     })
     .catch((e) => {
+      localStorage.setItem("check", JSON.stringify("false"))
+
       sendNotification("Ha introducido una dirección inválida", "alert alert-danger");
     });
 }
@@ -122,3 +163,5 @@ function infoPlace(placeId){
 
 
 window.initMap = initMap;
+
+

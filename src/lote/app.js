@@ -1,43 +1,49 @@
 import { sendNotification, domain } from "../utils/funcs.js";
+import { geocode } from "./maps.js";
 
 let obs = document.getElementById("obs");
 let ubi = document.getElementById("ubi");
 let btn = document.getElementById("btn");
 
-btn.addEventListener("click", function (event) {
-  event.preventDefault();
-  if (ubi.value.length > 1 && obs.value.length > 1) {
-      btn.setAttribute("disabled", "true");
 
-      let noti = document.getElementById("notification");
+// btn.addEventListener("click", function (event) {
+//     geocode({ address: ubi.value }).then(function(){
 
-      let loader = document.createElement("div");
-      loader.setAttribute("class", "loader");
-      loader.setAttribute("id", "loader");
-      noti.appendChild(loader);
+//         if (ubi.value.length > 1 && obs.value.length > 1) {
+//             btn.setAttribute("disabled", "true");
       
-      let getUserLocal = localStorage.getItem("userId");
-      let arr = [ubi.value, obs.value, getUserLocal];
+//             let noti = document.getElementById("notification");
       
+//             let loader = document.createElement("div");
+//             loader.setAttribute("class", "loader");
+//             loader.setAttribute("id", "loader");
+//             noti.appendChild(loader);
+            
+//             let getUserLocal = localStorage.getItem("userId");
+//             let arr = [ubi.value, obs.value, getUserLocal];
+            
+      
+//           newLote(arr)
+//             .then(function (res) {
+//               document.getElementById("loader").remove();
+//               sendNotification(res.status, "alert alert-success");
+      
+//               setTimeout(() => {
+//                 location.reload();
+//               }, 5000);
+//             });
+//         } else {
+//           sendNotification(
+//             "Es obligatorio rellenar ambos campos",
+//             "alert alert-danger"
+//           );
+//         }
+//     }).catch(function(error){
+//         console.log(error)
+//     })
+// });
 
-    newLote(arr)
-      .then(function (res) {
-        document.getElementById("loader").remove();
-        sendNotification(res.status, "alert alert-success");
-
-        setTimeout(() => {
-          location.reload();
-        }, 5000);
-      });
-  } else {
-    sendNotification(
-      "Es obligatorio rellenar ambos campos",
-      "alert alert-danger"
-    );
-  }
-});
-
-async function newLote(datos) {
+export async function newLote(datos) {
   let headersList = {
     "Content-Type": "application/json",
   };
