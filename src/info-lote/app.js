@@ -35,7 +35,7 @@ switch (getRolLocal) {
 
 asyncApiRequest("GET", url).then(function (lote) {
 
-  asyncMaps("GET", `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lote.lat} ${lote.long}&key=AIzaSyChi10UcuXjQgdOdXDPGtr-D6s2nsmPQ8c`)
+  asyncMaps("GET", `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lote[0].lat} ${lote[0].long}&key=AIzaSyChi10UcuXjQgdOdXDPGtr-D6s2nsmPQ8c`)
   .then(function(data){
     ubi.textContent = "Ubicación: " + data.results[0].formatted_address
 }).catch(function(){
@@ -43,15 +43,15 @@ asyncApiRequest("GET", url).then(function (lote) {
 
 })
 
-  infoLote.textContent = "Lote: " + lote.id;
-  status.textContent = "Estado: " + lote.status;
-  observation.textContent = "Observación: " + lote.observation;
+  infoLote.textContent = "Lote: " + lote[0].id;
+  status.textContent = "Estado: " + lote[0].status;
+  observation.textContent = "Observación: " + lote[0].observation;
 
   if (getRolLocal == 2) {
-    mainClasificador(lote)
+    mainClasificador(lote[0])
   } else {
     deleteButtons()
-    mainColaborador(lote)
+    mainColaborador(lote[0])
   }
 }).catch(function(){
   deleteButtons()
