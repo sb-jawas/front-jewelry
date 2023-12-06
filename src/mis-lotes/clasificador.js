@@ -1,4 +1,4 @@
-import { asyncApiRequest, domain, sendNotification } from "../utils/funcs.js";
+import { asyncApiRequest, domain, formatDateWithTime, sendNotification } from "../utils/funcs.js";
 
 const tblBody = document.getElementById("tbody");
 
@@ -7,21 +7,23 @@ let getRolUser  = localStorage.getItem("rolId")
 
 
 export function mainClasificador(){
-    let url = domain + "/api/colaborador/mis-lotes/" + getUserLocal
+    let url = domain + "/api/clasificador/"+getUserLocal+"/mis-lotes/"
     let methodApi = "GET";
 
 asyncApiRequest(methodApi, url )
 .then(function (data) {
-    console.log(data)
   createTable(data)
   listenerBtnClasificar(tblBody)
-}).catch(function(error){
+})
+.catch(function(error){
+  console.log(error)
     sendNotification("No tienes ningún lote asignado","alert alert-danger")
 });
 
 
 function createTable(data){
-  let arr = ["id", "empresa", "created_at"];
+
+  let arr = ["id", "name_empresa", "created_at"];
   let i = 0;
   let arrDatos = data;
 
@@ -34,7 +36,7 @@ function createTable(data){
       const cell = document.createElement("td");
 
       if (arr[j] == "created_at") {
-        let format = formatDate(arrDatos[i][arr[j]]);
+        let format = formatDateWithTime(arrDatos[i][arr[j]]);
         arrDatos[i][arr[j]] = format;
       }
 
