@@ -22,6 +22,8 @@ export function cargarLote() {
     let h4 = document.createElement("h4")
     h4.textContent = "Clasificado por: "+data[0].clasificador_id
     clasificado.appendChild(h4)
+  }).catch(function(error){
+    console.log(error)
   });
 }
 
