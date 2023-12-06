@@ -66,7 +66,7 @@ function initMap() {
       .then(function (res) {
         document.getElementById("loader").remove();
         sendNotification(res.status, "alert alert-success");
-
+        
         setTimeout(() => {
           location.reload();
         }, 5000);
@@ -105,6 +105,10 @@ export function geocode(request) {
       marker.setMap(map);
 
       localStorage.setItem("ubi", `${results[0].geometry.location}`);
+      let vec =`${results[0].geometry.location}`.split(',')
+      localStorage.setItem("lat",vec[0].split("(")[1])
+      localStorage.setItem("long",vec[1].split(")")[0])
+
       localStorage.setItem("placeId",`${results[0].place_id}`)
       document.getElementById("ubi").value = `${results[0].formatted_address}`;
       localStorage.setItem("check", JSON.stringify("true"))
@@ -114,9 +118,11 @@ export function geocode(request) {
       return results;
     })
     .catch((e) => {
-      localStorage.setItem("check", JSON.stringify("false"))
-
-      sendNotification("Ha introducido una dirección inválida", "alert alert-danger");
+      document.getElementById("loader").remove();
+      sendNotification("Ha introducido una dirección inválida. <br> Inténtalo en 5s cuando se recargue el navegador.", "alert alert-danger");
+      setTimeout(function(){
+        location.reload()
+      },5000)
     });
 }
 

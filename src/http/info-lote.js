@@ -3,7 +3,7 @@ import { asyncApiRequest, createListCell, domain, sendNotification } from "../ut
 const tblBody = document.getElementById("tbody");
 export function cargarLote() {
   let getLoteLocal = localStorage.getItem("loteId");
-  let url = domain + "/api/empresa/lote/" + getLoteLocal;
+  let url = domain + "/api/info-despiece/" + getLoteLocal;
   let clasificado = document.getElementById("clasificado")
   asyncApiRequest("GET", url).then(function (data) {
 
@@ -22,6 +22,8 @@ export function cargarLote() {
     let h4 = document.createElement("h4")
     h4.textContent = "Clasificado por: "+data[0].clasificador_id
     clasificado.appendChild(h4)
+  }).catch(function(error){
+    console.log(error)
   });
 }
 
