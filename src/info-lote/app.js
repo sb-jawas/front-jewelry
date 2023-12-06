@@ -1,7 +1,8 @@
 import { domain, asyncApiRequest, formatDate, sendNotification, switchThem, changeMode, deleteButtons, asyncMaps } from "../utils/funcs.js";
 import { redirect } from "../utils/routes.js";
+import { mainClasificador } from "./clasificador.js";
 import { mainColaborador } from "./colaborador.js";
-import { mainEmpresa } from "./empresa.js";
+
 
 
 let ubi = document.getElementById("ubi");
@@ -34,10 +35,10 @@ asyncApiRequest("GET", url).then(function (lote) {
   let userLocal = localStorage.getItem("userId");
   let getRolLocal = localStorage.getItem("rolId");
   if (getRolLocal == 2) {
-    mainColaborador(lote)
+    mainClasificador(lote)
   } else {
     deleteButtons()
-    mainEmpresa(lote)
+    mainColaborador(lote)
   }
 });
 
