@@ -208,7 +208,6 @@ function listenerBtnClasificar(btnClasificar){
       while (j < listaSelected[i].length) {
         if (listaSelected[i][j].hidden) {
           arrIds.push(listaSelected[i][j].id);
-          arrCant.push(inputCantidad[i].textContent);
         }
         j++;
       }
@@ -218,6 +217,8 @@ function listenerBtnClasificar(btnClasificar){
     let z = 0;
     while (z < inputObservation.length) {
       arrObs.push(inputObservation[z].textContent);
+      arrCant.push(inputCantidad[z].textContent);
+
       z++;
     }
 
@@ -228,8 +229,9 @@ function listenerBtnClasificar(btnClasificar){
       observation: arrObs,
       user_id: "1",
     });
-    let url = domain + "/api/lote/" + loteId + "/clasificar";
-    asyncApiRequest("POST", url, bodyContent).then(function (data) {
+    
+    let url = domain + "/api/clasificador/" + loteId + "/clasificar";
+    asyncApiRequest("PUT", url, bodyContent).then(function (data) {
       sendNotification(data.message, "alert alert-success");
       setTimeout(function(){
         location.reload();
@@ -241,11 +243,13 @@ function listenerBtnClasificar(btnClasificar){
 
 function listenerbtnRechazar(btnRechazar){
   btnRechazar.addEventListener("click", function () {
-    let getLocalId = localStorage.getItem("loteId");
-    let url = domain + "/api/lote/" + getLocalId + "/rechazar";
-    let method = "GET";
+    let getLoteLocal = localStorage.getItem("loteId");
+    let url = domain + "/api/clasificador/" + getLoteLocal + "/rechazar";
+    let method = "PATCH";
     asyncApiRequest(method, url).then(function () {
       sendNotification("El lote ha sido rechazado", "alert alert-warning");
+    }).catch(function(error){
+      sendNotification("No ha sido posible rechazar el lote. <br> Contacte con un adminsitrador para solucionar el problema.", "alert alert-warning");
     });
   });
 }

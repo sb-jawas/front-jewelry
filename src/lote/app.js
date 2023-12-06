@@ -1,4 +1,4 @@
-import { sendNotification, domain } from "../utils/funcs.js";
+import { sendNotification, domain, asyncApiRequest } from "../utils/funcs.js";
 import { geocode } from "./maps.js";
 
 let obs = document.getElementById("obs");
@@ -44,24 +44,18 @@ let btn = document.getElementById("btn");
 // });
 
 export async function newLote(datos) {
-  let headersList = {
-    "Content-Type": "application/json",
-  };
+  console.log(datos)
   let lat = localStorage.getItem("lat");
   let long = localStorage.getItem("long");
 
+  let url = domain + "/api/colaborador/lote";
+  
   let bodyContent = JSON.stringify({
     ubi: [lat, long],
     observation: datos[1],
     user_id: datos[2],
   });
-  let url = domain + "/api/lote";
-  let response = await fetch(url, {
-    method: "POST",
-    body: bodyContent,
-    headers: headersList,
-  });
 
-  let data = await response.json();
-  return data;
+  return asyncApiRequest("POST",url,bodyContent)
+
 }

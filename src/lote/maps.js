@@ -66,7 +66,7 @@ function initMap() {
       .then(function (res) {
         document.getElementById("loader").remove();
         sendNotification(res.status, "alert alert-success");
-
+        
         setTimeout(() => {
           location.reload();
         }, 5000);
