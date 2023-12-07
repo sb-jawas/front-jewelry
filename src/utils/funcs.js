@@ -10,6 +10,20 @@ export async function asyncApiRequest(methodApi, url, bodyContent) {
     body: bodyContent,
     headers: headersList,
   });
+
+  if (!response.ok) {
+    let errorResponse = await response.json();
+    throw new Error(JSON.stringify(errorResponse));
+  } else {
+    let data = await response.json();
+    return data;
+  }
+}
+
+export async function asyncMaps(methodApi, url) {
+  let response = await fetch(url, {
+    method: methodApi,
+  });
   if (!response.ok) {
     let errorResponse = await response.json();
     throw new Error(JSON.stringify(errorResponse));
@@ -28,6 +42,35 @@ export function formatDate(date) {
 
   let fechaFormateada = dia + "/" + mes + "/" + year;
   return fechaFormateada;
+}
+export function formatDateWithTime(date) {
+  var parseDate = new Date(date);
+
+  let dia = addZero(parseDate.getDate());
+  let mes = addZero(parseDate.getMonth() + 1);
+  let year = parseDate.getFullYear();
+  let horas = addZero(parseDate.getHours());
+  let minutos = addZero(parseDate.getMinutes());
+  let segundos = addZero(parseDate.getSeconds());
+
+  let fechaFormateada = 
+    dia +
+    "/" +
+    mes +
+    "/" +
+    year +
+    " - " +
+    horas +
+    ":" +
+    minutos +
+    ":" +
+    segundos;
+
+  return fechaFormateada;
+}
+
+function addZero(numero) {
+  return numero < 10 ? "0" + numero : numero;
 }
 
 export function sendNotification(message, type) {
