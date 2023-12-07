@@ -6,7 +6,7 @@ const btnAsign = document.getElementById("btn-asign");
 const asignCheck = document.getElementsByName("asign");
 let getUserLocal = localStorage.getItem("userId");
 
-let url = domain + "/api/lote/disponibles";
+let url = domain + "/api/clasificador/disponibles";
 let methodApi = "GET";
 
 asyncApiRequest(methodApi, url).then(function (data) {
@@ -71,29 +71,22 @@ btnAsign.addEventListener("click", function () {
     i++;
   }
   let bodyContent = JSON.stringify({
-    lote_id: arrLotes
+    "lote_id": arrLotes
   });
   let getUserLocal = localStorage.getItem("userId")
   let methodApi = "POST";
-  let url = domain + "/api/user/"+getUserLocal+"/asign";
+  let url = domain + "/api/clasificador/"+getUserLocal+"/asign";
 
   asyncApiRequest(methodApi, url, bodyContent).then(function (data) {
     document.getElementById("loader").remove()
     sendNotification(data.msg,"alert alert-success")
   }).catch(function(error){
     document.getElementById("loader").remove()
-    
-    let rtnMessge = ""
+    sendNotification("Ha selecionado lotes que ya han sido asignados","alert alert-danger")
 
-    console.log(error)
-
-    let i = 0
-    while(i<error.msg){
-      rtnMessge += `<li>${error.msg[i]}</li>`
-      i++
-    }
-    console.log(rtnMessge)
-    sendNotification(rtnMessge,"alert alert-danger")
+    setTimeout(function(){
+      location.reload()
+    }, 5000)
 
   });
 });
