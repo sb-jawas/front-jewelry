@@ -1,5 +1,7 @@
 import {
+    activeButtons,
   asyncApiRequest,
+  disableButtons,
   domain,
   getLocalStorage,
   sendNotification,
@@ -63,8 +65,6 @@ asyncApiRequest(methodApi, url)
 
             break;
         }
-
-        // row.appendChild(createInput(data[i][arr[j]], "submit", "btn btn-primary"))
         j++;
       }
       row.appendChild(createBtn(data[i].id));
@@ -98,6 +98,7 @@ function createTextArea(value){
 function createBtn(id) {
   let btn = document.createElement("button");
   btn.setAttribute("type", "submit");
+  btn.setAttribute("name", "btn");
   btn.setAttribute("class", "btn btn-warning");
   btn.setAttribute("id", `btn${id}`);
   btn.addEventListener("click", function () {
@@ -114,6 +115,8 @@ function createBtn(id) {
     let aux = 0
     let btnSave = document.createElement("input")
     btnSave.setAttribute("type", "submit");
+    btnSave.setAttribute("name", "btn");
+
     btnSave.setAttribute("class", "btn btn-success");
     btnSave.setAttribute("value","Guardar")
     btnSave.setAttribute("disabled", true)
@@ -123,6 +126,8 @@ function createBtn(id) {
     btnCancelar.setAttribute("class", "btn btn-danger");
     btnCancelar.setAttribute("value","Cancelar")
     btnCancelar.setAttribute("disabled", true)
+    btnCancelar.setAttribute("name", "btn");
+
 
     btn.parentNode.appendChild(btnSave)
     btn.parentNode.appendChild(btnCancelar)
@@ -166,6 +171,8 @@ function createBtn(id) {
           
               break;
           }
+        disableButtons()
+
         asyncApiRequest("GET", url)
         .then(function(data){
             console.log(data)
@@ -175,7 +182,16 @@ function createBtn(id) {
             btn.parentNode.removeChild(btnCancelar)        
             btn.parentNode.removeChild(btnSave)
             btn.disabled = false   
+            activeButtons()
+            sendNotification("Error al cancelar el componente","alert alert-danger")
 
+        }).catch(function(error){
+            
+            sendNotification("Error al cancelar el componente","alert alert-danger")
+            setTimeout(function(){
+                location.reload()
+            }, 5000)
+            activeButtons()
         })
      
     })
