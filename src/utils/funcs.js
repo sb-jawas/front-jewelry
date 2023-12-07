@@ -1,23 +1,23 @@
 export const domain = "http://localhost:2222";
 
 export async function asyncApiRequest(methodApi, url, bodyContent) {
-  let headersList = {
-    "Content-Type": "application/json",
-  };
-
-  let response = await fetch(url, {
-    method: methodApi,
-    body: bodyContent,
-    headers: headersList,
-  });
-
-  if (!response.ok) {
-    let errorResponse = await response.json();
-    throw new Error(JSON.stringify(errorResponse));
-  } else {
-    let data = await response.json();
-    return data;
-  }
+    let headersList = {
+      "Content-Type": "application/json",
+    };
+    
+    let response = await fetch(url, {
+      method: methodApi,
+      body: bodyContent,
+      headers: headersList,
+    });
+    
+    if (!response.ok) {
+      let errorResponse = await response.json();
+      throw new Error(JSON.stringify(errorResponse));
+    } else {
+      let data = await response.json();
+      return data;
+    }
 }
 
 export async function asyncMaps(methodApi, url) {
@@ -141,4 +141,22 @@ export function deleteButtons(){
   for (var i = 0, len = buttons.length; i != len; ++i) {
     buttons[0].parentNode.removeChild(buttons[0]);
   }
+}
+
+export function disableButtons(){
+  let buttons = document.getElementsByName("btn");
+  for (var i = 0, len = buttons.length; i != len; ++i) {
+    buttons[i].setAttribute("disabled", true)
+  }
+}
+
+export function activeButtons(){
+  let buttons = document.getElementsByName("btn");
+  for (var i = 0, len = buttons.length; i != len; ++i) {
+    buttons[i].disabled = false;
+  }
+}
+
+export function getLocalStorage(value){
+  return localStorage.getItem(value)
 }

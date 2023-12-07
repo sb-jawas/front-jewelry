@@ -4,13 +4,16 @@ const table = document.getElementById("table");
 const tblBody = document.getElementById("tbody");
 const btnAsign = document.getElementById("btn-asign");
 const asignCheck = document.getElementsByName("asign");
-let getUserLocal = localStorage.getItem("userId");
 
 let url = domain + "/api/clasificador/disponibles";
 let methodApi = "GET";
 
 asyncApiRequest(methodApi, url).then(function (data) {
-  createTable(data);
+  if(data.length>=1){
+    createTable(data);
+  }else{
+    sendNotification("No hay lotes para clasificar.", "alert alert-info")
+  }
 });
 
 function createTable(data) {
@@ -89,33 +92,4 @@ btnAsign.addEventListener("click", function () {
     }, 5000)
 
   });
-});
-
-function reqNameUser(id) {
-  console.log(id);
-  const url = domain + "/api/user/" + id;
-  const methodApi = "GET";
-  asyncApiRequest(methodApi, url).then(function (data) {
-    console.log(data);
-  });
-}
-
-function createBtnInfo() {
-  let btn = document.createElement("button");
-}
-
-let checkAll = document.getElementById("check-all");
-
-checkAll.addEventListener("change", function (event) {
-  let checked = event.target.checked;
-
-  let i = 0;
-  while (i < asignCheck.length) {
-    if (checked) {
-      asignCheck[i].checked = true;
-    } else {
-      asignCheck[i].checked = false;
-    }
-    i++;
-  }
 });

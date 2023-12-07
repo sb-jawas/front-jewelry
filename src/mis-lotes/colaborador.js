@@ -10,6 +10,7 @@ export function mainColaborador(){
     let url = domain + "/api/colaborador/"+ getUserLocal + "/mis-lotes/"
     asyncApiRequest("GET",url)
     .then(function(lotes){
+        if(lotes.length>=1){
             let i = 0
             while(i<lotes.length){
                 let infoLote = document.createElement("td")  
@@ -33,7 +34,6 @@ export function mainColaborador(){
                 row.appendChild(btn)
 
                 tblBody.appendChild(row)
-                // console.log(lotes[i].id, lotes[i].status, formatDateWithTime(lotes[i].created_at))
                 i++
             }
 
@@ -44,6 +44,10 @@ export function mainColaborador(){
                 }
             })
 
+          }else{
+            sendNotification("No ha creado ningún lote todavía.", "alert alert-info")
+          }
+           
     })
     .catch(function(){
         sendNotification("No ha creado ningún lote todavía", "alert alert-warning")

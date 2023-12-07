@@ -3,8 +3,6 @@ import { asyncApiRequest, domain, formatDateWithTime, sendNotification } from ".
 const tblBody = document.getElementById("tbody");
 
 let getUserLocal = localStorage.getItem("userId")
-let getRolUser  = localStorage.getItem("rolId")
-
 
 export function mainClasificador(){
     let url = domain + "/api/clasificador/"+getUserLocal+"/mis-lotes/"
@@ -12,8 +10,13 @@ export function mainClasificador(){
 
 asyncApiRequest(methodApi, url )
 .then(function (data) {
-  createTable(data)
-  listenerBtnClasificar(tblBody)
+  if(data.length>=1){
+    createTable(data);
+    listenerBtnClasificar(tblBody)
+
+  }else{
+    sendNotification("No hay lotes para clasificar.", "alert alert-info")
+  }
 })
 .catch(function(error){
   console.log(error)
