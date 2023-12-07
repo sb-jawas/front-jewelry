@@ -1,3 +1,4 @@
+import { deleteComponente, updateComponente } from "../http/componente.js";
 import {
     activeButtons,
   asyncApiRequest,
@@ -34,7 +35,6 @@ switch (getLocalStorage("rolId")) {
 
 asyncApiRequest(methodApi, url)
   .then(function (data) {
-    console.log(data[0].id);
     let arr = ["id", "name", "desc", "is_hardware"];
     let i = 0;
     while (i < data.length) {
@@ -50,7 +50,7 @@ asyncApiRequest(methodApi, url)
             break;
           case "name":
             row.appendChild(
-              createInput(data[i][arr[j]], "text", "form-control")
+              createInput(data[i][arr[j]], "text", )
             );
 
             break;
@@ -59,31 +59,43 @@ asyncApiRequest(methodApi, url)
 
             break;
           case "is_hardware":
-            row.appendChild(
-              createInput(data[i][arr[j]], "checkbox", "form-check-input")
-            );
+            row.appendChild(createCheckbox(data[i][arr[j]]));
 
             break;
         }
         j++;
       }
-      row.appendChild(createBtn(data[i].id));
+      row.appendChild(createBtn());
+      row.appendChild(btnDelte(data[i].id))
       tblbody.appendChild(row);
       i++;
     }
   })
   .catch(function () {});
 
-function createInput(value, type, typeOfClass) {
+function createInput(value, type) {
   let td = document.createElement("td");
   let inputCell = document.createElement("input");
   inputCell.setAttribute("disabled", true);
-  inputCell.setAttribute("class", typeOfClass);
+  inputCell.setAttribute("class", "form-control");
   inputCell.setAttribute("type", type);
   inputCell.setAttribute("placeholder", value);
   td.appendChild(inputCell);
   return td;
 }
+
+function createCheckbox(selected ) {
+    let td = document.createElement("td");
+    let inputCell = document.createElement("input");
+    inputCell.setAttribute("disabled", true);
+    inputCell.setAttribute("class", "form-check-input");
+    inputCell.setAttribute("type","checkbox" );
+    if(selected){
+        inputCell.setAttribute("checked", true)
+    }
+    td.appendChild(inputCell);
+    return td;
+  }
 
 function createTextArea(value){
     let td = document.createElement("td");
@@ -95,12 +107,11 @@ function createTextArea(value){
     return td;
 }
 
-function createBtn(id) {
+function createBtn() {
   let btn = document.createElement("button");
   btn.setAttribute("type", "submit");
   btn.setAttribute("name", "btn");
-  btn.setAttribute("class", "btn btn-warning");
-  btn.setAttribute("id", `btn${id}`);
+  btn.setAttribute("class", "btn btn-warning m-1");
   btn.addEventListener("click", function () {
     let i = 0
     let size = btn.parentNode.parentElement.childNodes.length
@@ -112,18 +123,17 @@ function createBtn(id) {
         i++
     }
 
-    let aux = 0
     let btnSave = document.createElement("input")
     btnSave.setAttribute("type", "submit");
     btnSave.setAttribute("name", "btn");
 
-    btnSave.setAttribute("class", "btn btn-success");
+    btnSave.setAttribute("class", "btn btn-success m-1");
     btnSave.setAttribute("value","Guardar")
     btnSave.setAttribute("disabled", true)
 
     let btnCancelar = document.createElement("input")
     btnCancelar.setAttribute("type", "submit");
-    btnCancelar.setAttribute("class", "btn btn-danger");
+    btnCancelar.setAttribute("class", "btn btn-outline-danger m-1");
     btnCancelar.setAttribute("value","Cancelar")
     btnCancelar.setAttribute("disabled", true)
     btnCancelar.setAttribute("name", "btn");
@@ -141,11 +151,36 @@ function createBtn(id) {
 
     btnSave.addEventListener('click',function(event){
         let z = 0
-        let size = event.target.parentNode.parentElement.childNodes.length
+        let size = event.target.parentNode.parentElement.childNodes.length-2
+        let vec = []
         while(z<size){
-            console.log(event.target.parentNode.parentElement.childNodes[z].firstChild.value)
+            if(z==3){
+                vec.push(event.target.parentNode.parentElement.childNodes[z].firstChild.checked)
+
+            }else{
+                vec.push(event.target.parentNode.parentElement.childNodes[z].firstChild.value)
+            }
             z++
         }
+
+        if(vec[3]){
+            vec[3] = 1
+        }else{
+            vec[3] = 0
+        }
+        
+        
+        let bodyContent = JSON.stringify({
+            "name": vec[1],
+            "desc": vec[2],
+            "is_hardware":vec[3]
+        })
+        
+        disableButtons()
+        let componenteId = event.target.parentNode.parentElement.childNodes[0].firstChild.placeholder
+        updateComponente(bodyContent, componenteId)
+        btn.parentNode.removeChild(btnCancelar)        
+        btn.parentNode.removeChild(btnSave)
     })
 
     btnCancelar.addEventListener('click',function(event){
@@ -175,7 +210,6 @@ function createBtn(id) {
 
         asyncApiRequest("GET", url)
         .then(function(data){
-            console.log(data)
             event.target.parentNode.parentElement.childNodes[1].firstChild.value = data.name
             event.target.parentNode.parentElement.childNodes[2].firstChild.value = data.desc
             event.target.parentNode.parentElement.childNodes[3].firstChild.value = data.is_hardware
@@ -183,8 +217,6 @@ function createBtn(id) {
             btn.parentNode.removeChild(btnSave)
             btn.disabled = false   
             activeButtons()
-            sendNotification("Error al cancelar el componente","alert alert-danger")
-
         }).catch(function(error){
             
             sendNotification("Error al cancelar el componente","alert alert-danger")
@@ -196,11 +228,31 @@ function createBtn(id) {
      
     })
 
+
+
     
   });
   let td = document.createElement("td");
-  btn.innerHTML = `<i class="bi bi-pencil-square"></i> Editar`;
+  btn.innerHTML = `<i class="bi bi-pencil-square"></i>`;
   td.appendChild(btn);
-
   return td;
+}
+
+function btnDelte(id){
+    let td = document.createElement("td");
+    let btnDelete = document.createElement("button")
+    btnDelete.setAttribute("type", "submit");
+    btnDelete.setAttribute("class", "btn btn-danger m-1");
+    btnDelete.setAttribute("value","Eliminar")
+    btnDelete.setAttribute("id", `btn${id}`);
+    btnDelete.setAttribute("name", "btn");
+
+    btnDelete.addEventListener('click', function(event){
+        disableButtons()
+        deleteComponente(id, btnDelete)
+    })
+  td.appendChild(btnDelete)
+  btnDelete.innerHTML = `<i class="bi bi-trash3-fill"></i>`;
+  return td
+
 }
