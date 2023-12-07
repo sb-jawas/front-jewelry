@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="../../node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+    
+    <title>Componentes</title>
+</head>
+<body>
+    <div class="container">
+
+        <h1>Crea un nuevo componente</h1>
+        <div class="col-4">
+            <div id="notification"><div id="noti"></div></div>
+            <form onsubmit="event.preventDefault()" class="form-group">
+                <input type="text" id="name" placeholder="Nombre" class="form-control m-3">
+                <input type="text" id="desc" placeholder="Descripción" class="form-control m-3">
+                
+                <div class="m-3">
+                    <input type="checkbox"  id="hardware" class="form-check-input">
+                    <label>¿Es hardware?</label>
+                </div>
+                <input type="button" id="btnSubmit" value="Crear nuevo componente" class="btn btn-primary">
+            </form>
+        </div>
+    </div>
+    <script type="module" src="app.js"></script>
+    <script src="../../node_modules/bootstrap/dist/js/bootstrap.js"></script>
+</body>
+</html>
