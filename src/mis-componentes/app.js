@@ -48,7 +48,7 @@ asyncApiRequest(methodApi, url)
             break;
           case "name":
             row.appendChild(
-              createInput(data[i][arr[j]], "number", "form-control")
+              createInput(data[i][arr[j]], "text", "form-control")
             );
 
             break;
@@ -81,7 +81,6 @@ function createInput(value, type, typeOfClass) {
   inputCell.setAttribute("class", typeOfClass);
   inputCell.setAttribute("type", type);
   inputCell.setAttribute("placeholder", value);
-  inputCell.setAttribute("value", value);
   td.appendChild(inputCell);
   return td;
 }
@@ -92,7 +91,6 @@ function createTextArea(value){
     inputCell.setAttribute("disabled", true);
     inputCell.setAttribute("class", "form-control");
     inputCell.setAttribute("placeholder", value);
-    inputCell.value=value
     td.appendChild(inputCell);
     return td;
 }
@@ -109,7 +107,6 @@ function createBtn(id) {
     while(i<size){
         if(i>=1){
             btn.parentNode.parentElement.childNodes[i].firstChild.removeAttribute("disabled")
-            btn.parentNode.parentElement.childNodes[i].firstChild.value = ""
         }
         i++
     }
@@ -127,29 +124,67 @@ function createBtn(id) {
     btnCancelar.setAttribute("value","Cancelar")
     btnCancelar.setAttribute("disabled", true)
 
+    btn.parentNode.appendChild(btnSave)
+    btn.parentNode.appendChild(btnCancelar)
+
+    btn.disabled = true
+
     tblbody.addEventListener('input', function(){
         btnSave.removeAttribute("disabled")
         btnCancelar.removeAttribute("disabled")
     })
 
     btnSave.addEventListener('click',function(event){
-        console.log(event.target.parentNode.parentElement.childNodes[2].firstChild.value)
+        let z = 0
+        let size = event.target.parentNode.parentElement.childNodes.length
+        while(z<size){
+            console.log(event.target.parentNode.parentElement.childNodes[z].firstChild.value)
+            z++
+        }
     })
 
     btnCancelar.addEventListener('click',function(event){
-        console.log(event.target.parentNode.parentElement.childNodes[2].firstChild.value)
-        
+    
+    
+        let u = 0
+        let size = event.target.parentNode.parentElement.childNodes.length
+        while(u<size){
+            if(u>=1 || u<=3){
+                event.target.parentNode.parentElement.childNodes[u].firstChild.setAttribute("disabled",true)
+            }
+            u++
+        }
+        let id =   event.target.parentNode.parentElement.childNodes[0].firstChild.placeholder
+        let url = domain
+        switch (getLocalStorage("rolId")) {
+            case "2":
+              url += "/api/clasificador/" + getLocalStorage("userId") + "/componentes/" +id
+              break;
+          
+            case "4":
+              url += "/api/componentes/"+id
+          
+              break;
+          }
+        asyncApiRequest("GET", url)
+        .then(function(data){
+            console.log(data)
+            event.target.parentNode.parentElement.childNodes[1].firstChild.value = data.name
+            event.target.parentNode.parentElement.childNodes[2].firstChild.value = data.desc
+            event.target.parentNode.parentElement.childNodes[3].firstChild.value = data.is_hardware
+            btn.parentNode.removeChild(btnCancelar)        
+            btn.parentNode.removeChild(btnSave)
+            btn.disabled = false   
+
+        })
+     
     })
 
-    btn.parentNode.appendChild(btnSave)
-    btn.parentNode.appendChild(btnCancelar)
-
-    btn.disabled = true
+    
   });
   let td = document.createElement("td");
-  // let iElement = document.createElement("i")
   btn.innerHTML = `<i class="bi bi-pencil-square"></i> Editar`;
   td.appendChild(btn);
-  // td.appendChild(iElement)
+
   return td;
 }
