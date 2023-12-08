@@ -1,4 +1,10 @@
-import { empty, sendNotification, setValidationBootstrap } from "../utils/funcs.js";
+import { createUser } from "../http/user.js";
+import {
+  domain,
+  empty,
+  sendNotification,
+  setValidationBootstrap,
+} from "../utils/funcs.js";
 
 let nameUser = document.getElementById("nameUser");
 let nameEmpresa = document.getElementById("nameEmpresa");
@@ -6,73 +12,120 @@ let email = document.getElementById("email");
 let pass = document.getElementById("password");
 let pass2 = document.getElementById("passwordConfirm");
 let btnSubmit = document.getElementById("btn-submit");
+let table = document.getElementById("table");
 
 let patterName = /^[a-zA-Z-\s]{3,20}$/;
 let patternMail = /^[\w-\.]+@([\w-]+\.)+[a-z]{3,4}$/;
 let patternPass = /^[a-zA-Z0-9\-.*#$]{8,14}$/;
 
+nameUser.addEventListener("input", function (event) {
+  if (patterName.test(event.target.value)) {
+    setValidationBootstrap(nameUser, "is-valid");
+  } else {
+    setValidationBootstrap(nameUser, "is-invalid");
+  }
+});
 
-nameUser.addEventListener('input', function(event){
-    if(patterName.test(event.target.value)){
-        setValidationBootstrap(nameUser,"is-valid")
-    }else{
-        setValidationBootstrap(nameUser,"is-invalid")
-    }
-})
+nameEmpresa.addEventListener("input", function (event) {
+  if (patterName.test(event.target.value)) {
+    setValidationBootstrap(nameEmpresa, "is-valid");
+  } else {
+    setValidationBootstrap(nameEmpresa, "is-invalid");
+  }
+});
 
+email.addEventListener("input", function (event) {
+  if (patternMail.test(event.target.value)) {
+    setValidationBootstrap(email, "is-valid");
+  } else {
+    setValidationBootstrap(email, "is-invalid");
+  }
+});
 
-nameEmpresa.addEventListener('input', function(event){
-    if(patterName.test(event.target.value)){
-        setValidationBootstrap(nameEmpresa,"is-valid")
-    }else{
-        setValidationBootstrap(nameEmpresa,"is-invalid")
-    }
-})
+pass.addEventListener("input", function (event) {
+  if (patternPass.test(event.target.value)) {
+    setValidationBootstrap(pass, "is-valid");
+  } else {
+    setValidationBootstrap(pass, "is-invalid");
+    setValidationBootstrap(pass2, "is-invalid");
+  }
+});
 
-
-email.addEventListener('input', function(event){
-    if(patternMail.test(event.target.value)){
-        setValidationBootstrap(email,"is-valid")
-    }else{
-        setValidationBootstrap(email,"is-invalid")
-    }
-})
-
-pass.addEventListener('input', function(event){
-    if(patternPass.test(event.target.value)){
-        setValidationBootstrap(pass,"is-valid")
-    }else{
-        setValidationBootstrap(pass,"is-invalid")
-        setValidationBootstrap(pass2,"is-invalid")
-    }
-})
-
-pass2.addEventListener('input', function(event){
-    if(patternPass.test(event.target.value)  && pass.value  == pass2.value){
-            setValidationBootstrap(pass2,"is-valid")
-    }else{
-        setValidationBootstrap(pass2,"is-invalid")
-    }
-})
-
+pass2.addEventListener("input", function (event) {
+  if (patternPass.test(event.target.value) && pass.value == pass2.value) {
+    setValidationBootstrap(pass2, "is-valid");
+  } else {
+    setValidationBootstrap(pass2, "is-invalid");
+  }
+});
 
 btnSubmit.addEventListener("click", function () {
-
   let arrChecked = checkEmptyValues(nameUser, nameEmpresa, email, pass, pass2);
   if (arrChecked[0] < 5) {
-        let arrCh = checkPatternValues( patterName, patterName, patternMail, patternPass, nameUser, nameEmpresa, email, pass, pass2);
-        if (arrCh[0] < 6) {
-          if (pass.value == pass2.value) {
-            sendNotification("Usuario creado", "alert alert-success");
-            setTimeout(function(){
-              window.location.href = "/"
-            },5000)
-          } else {
-            sendNotification("La contraseña no coincide", "alert alert-danger");
-          }
-        } else {
-          sendNotification(listEmpty(arrCh, "Revisa los siguientes errores"),"alert alert-danger");
-        }
+    let arrCh = checkPatternValues(
+      patterName,
+      patterName,
+      patternMail,
+      patternPass,
+      nameUser,
+      nameEmpresa,
+      email,
+      pass,
+      pass2
+    );
+    if (arrCh[0] < 6) {
+      if (pass.value == pass2.value) {
+        btnSubmit.setAttribute("disabled", true);
+
+        let bodyContent = JSON.stringify({
+          name: nameUser.value,
+          email: email.value,
+          password: pass.value,
+          name_empresa: nameEmpresa.value,
+        });
+        let url = domain + "/api/signup";
+
+        createUser("POST", url, bodyContent)
+          .then(function (result) {
+            console.log(result["status"]);
+            if (result["status"] == 200){
+                console.log("entro")
+                sendNotification("Usuario registrado correctamente", "alert alert-success");
+            }
+            if(result["status"] == undefined){
+                let parseData = JSON.parse(result);
+                let error = parseData.msg.email[0];
+                let error2 = parseData.msg.name_empresa[0];
+                let errors = [error, error2];
+                let mess = "Errores: <ul>";
+                errors.forEach((element) => {
+                    if (element.length > 1) {
+                        mess += "<li>" + element + "</li>";
+                    }
+                });
+                mess += "</ul>";
+                
+                sendNotification(mess, "alert alert-danger");
+
+            }
+          })
+          .catch(function (error) {
+            // console.log(JSON.parse(error))
+          });
+        setTimeout(function () {
+          table.addEventListener("input", function () {
+            document.getElementById("btn-submit").removeAttribute("disabled");
+          });
+        }, 2000);
+      } else {
+        sendNotification("La contraseña no coincide", "alert alert-danger");
+      }
+    } else {
+      sendNotification(
+        listEmpty(arrCh, "Revisa los siguientes errores"),
+        "alert alert-danger"
+      );
+    }
   } else {
     sendNotification(
       listEmpty(arrChecked, "Values Empty"),
@@ -85,14 +138,13 @@ btnSubmit.addEventListener("click", function () {
 });
 
 function checkEmptyValues(nameUser, nameEmpresa, email, pass, pass2) {
-  let arrValues = [nameUser, nameEmpresa , email, pass, pass2];
+  let arrValues = [nameUser, nameEmpresa, email, pass, pass2];
   let emptyValues = [];
   let notEmptyValues = [];
 
   let i = 0;
 
   while (i < arrValues.length) {
-    
     if (!empty(arrValues[i].value)) {
       notEmptyValues.push(arrValues[i].id);
     } else {
@@ -106,7 +158,17 @@ function checkEmptyValues(nameUser, nameEmpresa, email, pass, pass2) {
   return rtnArr;
 }
 
-function checkPatternValues( patterName, patterNameEmpresa , patternMail, patternPass, name, nameEmpresa ,email, pass, pass2) {
+function checkPatternValues(
+  patterName,
+  patterNameEmpresa,
+  patternMail,
+  patternPass,
+  name,
+  nameEmpresa,
+  email,
+  pass,
+  pass2
+) {
   let arrPatterns = [
     patterName,
     patterNameEmpresa,
@@ -120,7 +182,7 @@ function checkPatternValues( patterName, patterNameEmpresa , patternMail, patter
     "El nombre de la empresa debe de contener entre 3 y 30 carácteres",
     "El correo no cumple con los requisitos para ser un correo válido <br> ejemplo: username@foo.tld",
     "La contraseña debe tener entre 8 y 14 caracteres de longitud y puede contener los siguientes caracteres especiales: *, #, $.",
-    "La contraseña debe tener entre 8 y 14 caracteres de longitud y puede contener los siguientes caracteres especiales: *, #, $."
+    "La contraseña debe tener entre 8 y 14 caracteres de longitud y puede contener los siguientes caracteres especiales: *, #, $.",
   ];
 
   let notPassedTest = [];
