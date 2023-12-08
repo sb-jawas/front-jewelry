@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="../../node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <title>Signup</title>
+</head>
+<body>
+    <div id="navbar"></div>
+    <div class="container">
+        <div id="signup" class="p-4 rounded">
+            <h1 id="h1" style="font-family: 'Open Sans', sans-serif; padding-bottom: 25px">Mi perfil</h1>
+            <div id="notification"><div id="noti"></div></div>
+        <div class="row">
+          <form class="row g-3" onsubmit="event.preventDefault();" id="table">
+            <div class="col-md-5">
+              <label class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="nameUser" required />
+            </div>
+            <div class="row">
+              <div class="col-md-5">
+                <label class="form-label">Nombre de empresa</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" id="nameEmpresa" aria-describedby="inputGroupPrepend2" required />
+                </div>
+              </div>
+              <div class="col-md-7">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" required />
+              </div>
+            </div>
+            <div class="col-md-5">
+              <label class="form-label">Password</label>
+              <input type="password" class="form-control" id="password" required />
+            </div>
+            <div class="col-md-5">
+              <label class="form-label">Password confirm</label>
+              <input type="password" class="form-control" id="passwordConfirm" required />
+            </div>
+            <div class="col-12">
+              <button class="btn btn-primary d-inline" id="btn-submit">Cambiar datos</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    <script type="module" src="app.js"></script>
+</body>
+</html>
