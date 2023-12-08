@@ -6,6 +6,8 @@ export let rolRoute = {
 }
 
 export let redirect = {
+    "login": "../",
+    "select-rol": "../selection-rol",
     "componentes": "../crear-componente",
     "info-lote": "../info-lote"
 }
