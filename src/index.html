@@ -1,24 +1,40 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="../../node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <title>Login</title>
 </head>
 <body>
-    
-    <div>
-
-        <form action="">
-            <label>Correo electronico:</label> <input type="text" id="email">
-            <label>Contraseña:</label> <input type="password" id="pass">
-
-            <p>¿Aun no tienes cuenta? haz click <a href="registro/">aqui</a></p>
-            <input type="button" value="Iniciar sesion" id="aceptar">
-        </form>
-
-    </div>
-
-    <script type="module" src="loggin.js"></script>
+    <div class="container">
+        <div class="row">
+          <div class="col-sm-4"></div>
+          <div class="col-sm-8 col-md-6 col-lg-4">
+            <div id="login" class="p-4 rounded">
+              <h1 style="font-family: 'Open Sans', sans-serif">Inicio de sesión</h1>
+  
+              <div class="form-group">
+                <label class="form-group-text test" for="email">Email address</label>
+                <input type="email" class="form-control input-group-sm" id="email" />
+              </div>
+              <div class="form-group">
+                <label class="form-group-text test" for="password" >Contraseña</label>
+                <input type="password" class="form-control input-group-sm" id="password" />
+                <div id="notification"></div>
+              </div>
+  
+              <div class="test">
+                <p>Necesitas una cuenta? <a href="signup/">créa una cuenta</a> ahora!</p>
+                <button id="submit" class="btn btn-primary mx-auto d-block" type="submit"> Iniciar sesión</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4"></div>
+      </div>
+        <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    <script type="module" src="app.js"></script>
 </body>
 </html>

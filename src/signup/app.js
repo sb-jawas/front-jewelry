@@ -1,9 +1,13 @@
-import { createUser } from "../http/user.js";
+import { asyncUser } from "../http/user.js";
 import {
   domain,
   empty,
   sendNotification,
   setValidationBootstrap,
+  patterName,
+  patternMail,
+  patternPass 
+
 } from "../utils/funcs.js";
 
 let nameUser = document.getElementById("nameUser");
@@ -13,10 +17,6 @@ let pass = document.getElementById("password");
 let pass2 = document.getElementById("passwordConfirm");
 let btnSubmit = document.getElementById("btn-submit");
 let table = document.getElementById("table");
-
-let patterName = /^[a-zA-Z-\s]{3,20}$/;
-let patternMail = /^[\w-\.]+@([\w-]+\.)+[a-z]{3,4}$/;
-let patternPass = /^[a-zA-Z0-9\-.*#$]{8,14}$/;
 
 nameUser.addEventListener("input", function (event) {
   if (patterName.test(event.target.value)) {
@@ -85,7 +85,7 @@ btnSubmit.addEventListener("click", function () {
         });
         let url = domain + "/api/signup";
 
-        createUser("POST", url, bodyContent)
+        asyncUser(url, bodyContent)
           .then(function (result) {
             console.log(result["status"]);
             if (result["status"] == 200){
