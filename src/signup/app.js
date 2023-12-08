@@ -1,9 +1,13 @@
-import { createUser } from "../http/user.js";
+import { asyncUser, createUser } from "../http/user.js";
 import {
   domain,
   empty,
   sendNotification,
   setValidationBootstrap,
+  patterName 
+,patternMail 
+,patternPass 
+
 } from "../utils/funcs.js";
 
 let nameUser = document.getElementById("nameUser");
@@ -85,7 +89,7 @@ btnSubmit.addEventListener("click", function () {
         });
         let url = domain + "/api/signup";
 
-        createUser("POST", url, bodyContent)
+        asyncUser(url, bodyContent)
           .then(function (result) {
             console.log(result["status"]);
             if (result["status"] == 200){

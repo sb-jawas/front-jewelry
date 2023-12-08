@@ -1,4 +1,4 @@
-export const domain = "http://localhost:2222";
+export const domain = "http://127.0.0.1:2222";
 
 export async function asyncApiRequest(methodApi, url, bodyContent) {
     let headersList = {
@@ -166,3 +166,19 @@ function getUserToken(){
   return sessionStorage.getItem("token")
 }
 
+export function empty(num) {
+  return num.length == 0;
+}
+
+export function setValidationBootstrap(value, validation) {
+  value.setAttribute("class", "form-control " + validation);
+}
+
+
+export function checkByPattern(partternRegex, value) {
+  return partternRegex.test(value);
+}
+
+export let patterName = /^[a-zA-Z-\s]{3,20}$/;
+export let patternMail = /^[\w-\.]+@([\w-]+\.)+[a-z]{3,4}$/;
+export let patternPass = /^[a-zA-Z0-9\-.*#$]{8,14}$/;
