@@ -3,6 +3,7 @@ export const domain = "http://localhost:2222";
 export async function asyncApiRequest(methodApi, url, bodyContent) {
     let headersList = {
       "Content-Type": "application/json",
+      "Authorization" : getUserToken()
     };
     
     let response = await fetch(url, {
@@ -160,3 +161,8 @@ export function activeButtons(){
 export function getLocalStorage(value){
   return localStorage.getItem(value)
 }
+
+function getUserToken(){
+  return sessionStorage.getItem("token")
+}
+
