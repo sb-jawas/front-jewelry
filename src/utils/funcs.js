@@ -1,9 +1,11 @@
+import { redirect } from "./routes.js";
+
 export const domain = "http://127.0.0.1:2222";
 
 export async function asyncApiRequest(methodApi, url, bodyContent) {
     let headersList = {
       "Content-Type": "application/json",
-      "Authorization" : getUserToken()
+      "Authorization" : "Bearer "+getUserToken()
     };
     
     let response = await fetch(url, {
@@ -11,7 +13,6 @@ export async function asyncApiRequest(methodApi, url, bodyContent) {
       body: bodyContent,
       headers: headersList,
     });
-    
     if (!response.ok) {
       let errorResponse = await response.json();
       throw new Error(JSON.stringify(errorResponse));
@@ -182,3 +183,14 @@ export function checkByPattern(partternRegex, value) {
 export let patterName = /^[a-zA-Z-\s]{3,20}$/;
 export let patternMail = /^[\w-\.]+@([\w-]+\.)+[a-z]{3,4}$/;
 export let patternPass = /^[a-zA-Z0-9\-.*#$]{8,14}$/;
+
+export function redirectToMyRol(rolView){
+  if(getUserToken() != null){
+  let rolLocal =  getLocalStorage("rolId")
+    if(rolView != rolLocal){
+      location.href=redirect["select-rol"]
+    }
+  }else{
+    location.href=redirect["login"]
+  }
+}
