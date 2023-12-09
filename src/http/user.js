@@ -1,3 +1,4 @@
+import { getUserToken } from "../utils/funcs.js";
 
 export async function asyncUser(methodApi,url, bodyContent){ 
     let headersList = {
@@ -5,7 +6,7 @@ export async function asyncUser(methodApi,url, bodyContent){
     };
     try{
         let response = await fetch(url, {
-            method: methodApi,
+            method: "POST",
             body: bodyContent,
             headers: headersList,
         });
@@ -27,4 +28,27 @@ export async function asyncUser(methodApi,url, bodyContent){
 
 export async function loginUser(){
 
+}
+
+export async function uploadImage(methodApi, url,bodyContent){
+    let headersList = {
+        "Authorization" : "Bearer " + getUserToken()
+      };
+      try{
+
+          let response = await fetch(url, {
+              method: methodApi,
+              body: bodyContent,
+              headers: headersList,
+            });
+            if (!response.ok) {
+                let errorResponse = await response.json();
+                throw new Error(JSON.stringify(errorResponse));
+            } else {
+                let data = await response.json();
+                return data;
+            }
+        }catch(error){
+            console.log(error)
+        }
 }
