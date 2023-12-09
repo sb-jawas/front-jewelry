@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="../../node_modules/bootstrap-icons/font/bootstrap-icons.css">
    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
-
+  <link rel="stylesheet" href="style.css">
     <title>Lote</title>
 </head>
 
@@ -34,7 +34,7 @@
           </table>
     </div>
 
-<div class="modal fade" id="modalProfile" tabindex="-1" aria-labelledby="modalProfile" aria-hidden="true">
+<div class="modal fade modal-xl" id="modalProfile" width="80" tabindex="-1" aria-labelledby="modalProfile" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -45,7 +45,13 @@
       <div class="modal-body">
         <div id="notificationModal"><div id="notiModal"></div></div>
         <form class="row g-3" onsubmit="event.preventDefault();" >
+          <div class="col" >
+              <img class="mb-4" id="profile" name="inputData">
+              <input id="newImage" name="inputData" class="form-control mt-4" type="file" accept="image/png, image/jpeg" >
+          </div>
+          
           <div class="col" id="bodyModal">
+
             <label class="form-label">Nombre</label>
             <input type="text" class="form-control" id="name" name="inputData"/>
             <label class="form-label">Nombre de empresa</label>

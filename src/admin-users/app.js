@@ -1,4 +1,4 @@
-import { asyncUser } from "../http/user.js";
+import { asyncUser, uploadImage } from "../http/user.js";
 import { domain, asyncApiRequest, formatDate, sendNotification, redirectToMyRol, patterName, patternMail, patternPass, patternDate, sendNotificationModal } from "../utils/funcs.js";
 
 const table = document.getElementById("table");
@@ -15,8 +15,9 @@ let changePass = document.getElementById("changePass")
 let bodyModal = document.getElementById("bodyModal")
 let groupData = document.getElementById("groupDate")
 let inputData = document.getElementsByName("inputData")
-let userId = document.getElementById("userId").childNodes[0].id
-
+let userId = document.getElementById("userId")
+let userImage = document.getElementById("profile")
+let newImage = document.getElementById("newImage")
 
 
 let btnCreate = createBtn("Crear usuario", "btn btn-outline-success") 
@@ -67,14 +68,13 @@ function createTable(data) {
           switchHiddenBtns(btns, false)
           let btn2 = [btnPrg, btnCreate];
           switchHiddenBtns(btn2, true)
-          let userId = event.target.parentNode.parentNode.id
+          userId = event.target.parentNode.parentNode.id
+          console.log(userId)
           let url = domain + "/api/user/" + userId
           asyncApiRequest("GET",url).then(function(user){
             document.getElementById("userName").innerHTML = "ID usuario: " + user.msg.id
-            let userId = document.getElementById("userId")
-            let newDivId = document.createElement("div")
-            newDivId.id = user.msg.id
-            userId.appendChild(newDivId)
+            userImage.setAttribute("src", user.msg.profile)
+            
             let i = 0
             while(i<inputData.length){
               inputData[i].placeholder = user.msg[inputData[i].id]
@@ -170,6 +170,10 @@ addUser.addEventListener('click', function(){
             arr[element.id] = change
           }
         }
+        if(element.type == "file"){
+          let bodyImage = new FormData();
+          bodyImage.append("image", "c:\Users\bhamidou\Downloads\_fd4bbbe6-cf23-4ab8-9d63-e01272788188.jpg");
+        }
         if(myTest[element.id].test(element.value)){
           arr[element.id] = element.value
         }
@@ -182,6 +186,13 @@ addUser.addEventListener('click', function(){
     }).catch(function(error){
       console.log(error)
     })
+
+    if(bodyImage != null){
+      let url = domain + "/api/user/"+userId+ "/image"
+      uploadImage("POST", url, bodyImage).then(function(data){
+        console.log(data)
+      })
+    }
   })
 
   buttonFooter.appendChild(btnCreate)
@@ -225,37 +236,63 @@ function switchHiddenBtns(btns, status){
 saveUser.addEventListener('click', function(event){
   let inputData = document.getElementsByName("inputData")
   let arr = {}
+  let bodyImage = new FormData();
   inputData.forEach(element =>{
-    if(element.value.length>=1){
-      if(myTest[element.id].test(element.value)){
-        arr[`${element.id}`] = `${element.value}`
+    if(element.id != "profile" && element.id != "newImage" ){
+      if(element.value.length>=1){
+        if(myTest[element.id].test(element.value)){
+          arr[`${element.id}`] = `${element.value}`
+        }
       }
     }
+    if(element.type == "file" && element.files.length>=1){
+      console.log(element.files)
+      bodyImage.append("image", element.files[0]);
+    }
   })
+  console.log(bodyImage.get("image"))
+  if(bodyImage.get("image") != null){
+    let url = domain + "/api/user/"+ userId+ "/image"
+    uploadImage("POST", url, bodyImage).then(function(){
+      sendNotificationModal("Imagen actualizada correctamente","alert alert-success")
+      setTimeout(()=>{
+        location.reload()
+      }, 2000)
+    })
+  }
   let bodyContent = JSON.stringify(arr)
-  
-  let url = domain + "/api/user/" + userId
-
-  asyncUser("PUT",url, bodyContent).then(function(data){
-    if(typeof data == "object" ){
-      sendNotificationModal("Usuario actualizado correctamente","alert alert-success")
-    }else{
-      let parseData = JSON.parse(data)
-      if(parseData.status == 400){
-        
-        let error = parseData.msg.email;
-        let error2 = parseData.msg.name_empresa;
-        let errors = [error, error2];
-        let mess = "Errores: <ul>";
-        errors.forEach((element) => {
-          if (element != undefined) {
-            mess += "<li>" + element + "</li>";
-          }
-        });
-        mess += "</ul>";
-        
-        sendNotificationModal(mess, "alert alert-danger");
+  console.log(bodyContent)
+  if(bodyContent>2){
+    let url = domain + "/api/user/" + userId
+    
+    asyncUser("PUT",url, bodyContent).then(function(data){
+      if(typeof data == "object" ){
+        sendNotificationModal("Usuario actualizado correctamente","alert alert-success")
+      }else{
+        let parseData = JSON.parse(data)
+        if(parseData.status == 400){
+          
+          let error = parseData.msg.email;
+          let error2 = parseData.msg.name_empresa;
+          let errors = [error, error2];
+          let mess = "Errores: <ul>";
+          errors.forEach((element) => {
+            if (element != undefined) {
+              mess += "<li>" + element + "</li>";
+            }
+          });
+          mess += "</ul>";
+          
+          sendNotificationModal(mess, "alert alert-danger");
+        }
       }
-    }
-  })
+    })
+  }
+})
+
+newImage.addEventListener('change', function(event){
+  console.log(event.target.files)
+  console.log(event.target.files[0])
+  userImage.src = URL.createObjectURL(event.target.files[0]);
+
 })
