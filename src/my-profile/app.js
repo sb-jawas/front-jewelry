@@ -12,8 +12,8 @@ import {
 
 } from "../utils/funcs.js";
 
-let nameUser = document.getElementById("nameUser");
-let nameEmpresa = document.getElementById("nameEmpresa");
+let nameUser = document.getElementById("name");
+let nameEmpresa = document.getElementById("name_empresa");
 let email = document.getElementById("email");
 let pass = document.getElementById("password");
 let pass2 = document.getElementById("passwordConfirm");
@@ -30,6 +30,7 @@ asyncApiRequest("GET", url).then(function(data){
 nameUser.addEventListener("input", function (event) {
   if (patterName.test(event.target.value)) {
     setValidationBootstrap(nameUser, "is-valid");
+
   } else {
     setValidationBootstrap(nameUser, "is-invalid");
   }
@@ -38,16 +39,20 @@ nameUser.addEventListener("input", function (event) {
 nameEmpresa.addEventListener("input", function (event) {
   if (patterName.test(event.target.value)) {
     setValidationBootstrap(nameEmpresa, "is-valid");
+
   } else {
     setValidationBootstrap(nameEmpresa, "is-invalid");
+
   }
 });
 
 email.addEventListener("input", function (event) {
   if (patternMail.test(event.target.value)) {
     setValidationBootstrap(email, "is-valid");
+
   } else {
     setValidationBootstrap(email, "is-invalid");
+
   }
 });
 
@@ -57,6 +62,7 @@ pass.addEventListener("input", function (event) {
   } else {
     setValidationBootstrap(pass, "is-invalid");
     setValidationBootstrap(pass2, "is-invalid");
+
   }
 });
 
@@ -68,125 +74,47 @@ pass2.addEventListener("input", function (event) {
   }
 });
 
-btnSubmit.addEventListener("click", function () {
-  let arrChecked = checkEmptyValues(nameUser, nameEmpresa, email, pass, pass2);
-  if (arrChecked[0] < 5) {
-    let arrCh = checkPatternValues(
-      patterName,
-      patterName,
-      patternMail,
-      patternPass,
-      nameUser,
-      nameEmpresa,
-      email,
-      pass,
-      pass2
-    );
-    if (arrCh[0] < 6) {
-      if (pass.value == pass2.value) {
-       
-
-        setTimeout(function () {
-          table.addEventListener("input", function () {
-            document.getElementById("btn-submit").removeAttribute("disabled");
-          });
-        }, 2000);
-      } else {
-        sendNotification("La contraseña no coincide", "alert alert-danger");
+btnSubmit.addEventListener("click", function () {      
+  let inputData = document.getElementsByName("inputData")
+  let arr = {}
+  inputData.forEach(element =>{
+    if(element.value.length>=1){
+      if(myTest[element.id].test(element.value)){
+        arr[`${element.id}`] = `${element.value}`
       }
-    } else {
-      sendNotification(
-        listEmpty(arrCh, "Revisa los siguientes errores"),
-        "alert alert-danger"
-      );
     }
-  } else {
-    sendNotification(
-      listEmpty(arrChecked, "Values Empty"),
-      "alert alert-danger"
-    );
-    arrChecked[0].forEach((element) => {
-      setValidationBootstrap(document.getElementById(element), "is-invalid");
-    });
-  }
+  })
+  let bodyContent = JSON.stringify(arr)
+  
+  let url = domain + "/api/user/" + getLocalStorage("userId")
+  asyncUser("PUT",url, bodyContent).then(function(data){
+    if(typeof data == "object" ){
+      sendNotification("Usuario actualizado correctamente","alert alert-success")
+    }else{
+      let parseData = JSON.parse(data)
+      if(parseData.status == 400){
+        
+        let error = parseData.msg.email;
+        let error2 = parseData.msg.name_empresa;
+        let errors = [error, error2];
+        let mess = "Errores: <ul>";
+        errors.forEach((element) => {
+          if (element != undefined) {
+            mess += "<li>" + element + "</li>";
+          }
+        });
+        mess += "</ul>";
+        
+        sendNotification(mess, "alert alert-danger");
+      }
+    }
+  })
 });
 
-function checkEmptyValues(nameUser, nameEmpresa, email, pass, pass2) {
-  let arrValues = [nameUser, nameEmpresa, email, pass, pass2];
-  let emptyValues = [];
-  let notEmptyValues = [];
-
-  let i = 0;
-
-  while (i < arrValues.length) {
-    if (!empty(arrValues[i].value)) {
-      notEmptyValues.push(arrValues[i].id);
-    } else {
-      emptyValues.push(arrValues[i].id);
-    }
-    i++;
-  }
-
-  let rtnArr = [emptyValues, notEmptyValues];
-
-  return rtnArr;
+let myTest = {
+  "name" : patterName,
+  "name_empresa" : patterName,
+  "email" : patternMail,
+  "password" : patternPass,
 }
 
-function checkPatternValues(
-  patterName,
-  patterNameEmpresa,
-  patternMail,
-  patternPass,
-  name,
-  nameEmpresa,
-  email,
-  pass,
-  pass2
-) {
-  let arrPatterns = [
-    patterName,
-    patterNameEmpresa,
-    patternMail,
-    patternPass,
-    patternPass,
-  ];
-  let arrValues = [name, nameEmpresa, email, pass, pass2];
-  let rtnErrors = [
-    "El nombre debe de contener entre 3 y 30 carácteres",
-    "El nombre de la empresa debe de contener entre 3 y 30 carácteres",
-    "El correo no cumple con los requisitos para ser un correo válido <br> ejemplo: username@foo.tld",
-    "La contraseña debe tener entre 8 y 14 caracteres de longitud y puede contener los siguientes caracteres especiales: *, #, $.",
-    "La contraseña debe tener entre 8 y 14 caracteres de longitud y puede contener los siguientes caracteres especiales: *, #, $.",
-  ];
-
-  let notPassedTest = [];
-  let passedTest = [];
-  let notPassedTestId = [];
-
-  let i = 0;
-
-  while (i < arrValues.length) {
-    if (arrPatterns[i].test(arrValues[i].value)) {
-      passedTest.push(arrValues[i].id);
-    } else {
-      notPassedTest.push(rtnErrors[i]);
-      notPassedTestId.push(arrValues[i].id);
-    }
-    i++;
-  }
-
-  let rtnArr = [notPassedTest, notPassedTestId, passedTest];
-
-  return rtnArr;
-}
-
-function listEmpty(arrList, titleErrorMsg) {
-  let i = 0;
-  let rtnList = titleErrorMsg + ": <ul>";
-  while (i < arrList[0].length) {
-    rtnList += "<li>" + arrList[0][i] + "</li>";
-    i++;
-  }
-  rtnList += "</ul>";
-  return rtnList;
-}
