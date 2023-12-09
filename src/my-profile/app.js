@@ -1,7 +1,6 @@
 import { asyncUser } from "../http/user.js";
 import {
   domain,
-  empty,
   sendNotification,
   setValidationBootstrap,
   patterName,
@@ -16,9 +15,7 @@ let nameUser = document.getElementById("name");
 let nameEmpresa = document.getElementById("name_empresa");
 let email = document.getElementById("email");
 let pass = document.getElementById("password");
-let pass2 = document.getElementById("passwordConfirm");
 let btnSubmit = document.getElementById("btn-submit");
-let table = document.getElementById("table");
 
 let url = domain+"/api/user/"+getLocalStorage("userId")
 asyncApiRequest("GET", url).then(function(data){
@@ -61,16 +58,6 @@ pass.addEventListener("input", function (event) {
     setValidationBootstrap(pass, "is-valid");
   } else {
     setValidationBootstrap(pass, "is-invalid");
-    setValidationBootstrap(pass2, "is-invalid");
-
-  }
-});
-
-pass2.addEventListener("input", function (event) {
-  if (patternPass.test(event.target.value) && pass.value == pass2.value) {
-    setValidationBootstrap(pass2, "is-valid");
-  } else {
-    setValidationBootstrap(pass2, "is-invalid");
   }
 });
 

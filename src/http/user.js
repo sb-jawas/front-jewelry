@@ -1,11 +1,11 @@
 
-export async function asyncUser(url, bodyContent){ 
+export async function asyncUser(methodApi,url, bodyContent){ 
     let headersList = {
         "Content-Type": "application/json"
     };
     try{
         let response = await fetch(url, {
-            method: "POST",
+            method: methodApi,
             body: bodyContent,
             headers: headersList,
         });
