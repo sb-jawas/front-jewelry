@@ -14,6 +14,9 @@ let saveUser = document.getElementById("save")
 let changePass = document.getElementById("changePass")
 let bodyModal = document.getElementById("bodyModal")
 
+let btnCreate = createBtn("Crear usuario", "btn btn-outline-success") 
+let btnPrg = createBtn("Programar alta", "btn btn-outline-warning") 
+
 let url = domain + "/api/admin";
 let methodApi = "GET";
 
@@ -29,6 +32,8 @@ asyncApiRequest(methodApi, url).then(function (data) {
 });
 
 function createTable(data) {
+  
+
   let arr = ["name", "email", "role"];
   let i = 0;
   let arrDatos = data;
@@ -47,6 +52,10 @@ function createTable(data) {
         btn.setAttribute("data-bs-target" , "#modalProfile")
         btn.setAttribute("class", "btn btn-primary")
         btn.addEventListener('click',function(event){
+          let btns = [btnbajaUser, btnProgramBaja, btnActiveUser ,  saveUser,  changePass];
+          switchHiddenBtns(btns, false)
+          let btn2 = [btnPrg, btnCreate];
+          switchHiddenBtns(btn2, true)
           let userId = event.target.parentNode.parentNode.id
           let url = domain + "/api/user/" + userId
           asyncApiRequest("GET",url).then(function(user){
@@ -86,16 +95,12 @@ searchUser.addEventListener('input',function(event){
 addUser.addEventListener('click', function(){
   document.getElementById("userName").innerHTML = "Nuevo usuario"
   
+  let btns = [btnbajaUser, btnProgramBaja, btnActiveUser ,  saveUser,  changePass];
+  switchHiddenBtns(btns, true)
 
-
-  btnbajaUser.setAttribute("hidden",true) 
-  btnProgramBaja.setAttribute("hidden",true) 
-  btnActiveUser.setAttribute("hidden",true) 
-  saveUser.setAttribute("hidden",true) 
-  changePass.setAttribute("hidden",true) 
-
-  let btnCreate = createBtn("Crear usuario", "btn btn-outline-success") 
-  let btnPrg = createBtn("Programar alta", "btn btn-outline-warning") 
+  let btn2 = [btnPrg, btnCreate];
+  switchHiddenBtns(btn2, false)
+  
 
   btnPrg.addEventListener('click',function(){
     btnPrg.disabled = true
@@ -166,4 +171,10 @@ let myTest = {
   "email" : patternMail,
   "start_at" : patternDate,
   "end_at" : patternDate
+}
+
+function switchHiddenBtns(btns, status){
+  btns.forEach(elements =>{
+    elements.hidden = status
+  })
 }
