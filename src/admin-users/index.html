@@ -14,6 +14,7 @@
 <body>
     <div class="container">
         <h1>Adminstración de usuarios</h1>
+        <div id="notification"><div id="noti"></div></div>
         <label id="countUsers"></label>
         <div class="col-4">              
         </div>
@@ -42,7 +43,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <div id="notification"><div id="noti"></div></div>
+        <div id="notificationModal"><div id="notiModal"></div></div>
         <form class="row g-3" onsubmit="event.preventDefault();" >
           <div class="col" id="bodyModal">
             <label class="form-label">Nombre</label>
@@ -61,13 +62,14 @@
             </div>
           </div>
         </div>
+        <div id="userId"></div>
         <div class="modal-footer" id="buttons">
-          <button type="button" id="save" class="btn btn-success">Guardar cambios</button>
-          <input type="button" id="changePass" class="btn btn-info" value="Cambiar contraseña"/>
+          <button type="button" id="save" class="btn btn-primary">Guardar cambios</button>
+          <input type="button" id="changePass" class="btn btn-warning" value="Cambiar contraseña"/>
           <br>
-          <button type="button" id="baja" class="btn btn-outline-warning">Dar de baja</button>
-        <button type="button" id="programBaja" class="btn btn-outline-warning">Programar baja</button>
-        <button type="button" id="activarUser" class="btn btn-outline-success">Activar usuario</button>
+          <button type="button" id="baja" class="btn btn-danger">Dar de baja</button>
+        <button type="button" id="programBaja" class="btn btn-warning">Programar baja</button>
+        <button type="button" id="activarUser" class="btn btn-success">Activar usuario</button>
       </div>
     </div>
   </div>
