@@ -92,6 +92,23 @@ export function sendNotification(message, type) {
   newP.innerHTML = `<i class="bi bi-info-circle-fill"></i> ` + message;
   notification.appendChild(newP);
 }
+export function sendNotificationModal(message, type) {
+  let notification = document.getElementById("notificationModal");
+
+  let getNoti = document.getElementById("notiModal");
+
+  let newP = null;
+
+  if (!getNoti) {
+    newP = document.createElement("p");
+    newP.setAttribute("id", "noti");
+  } else {
+    newP = getNoti;
+  }
+  notification.setAttribute("class", type);
+  newP.innerHTML = `<i class="bi bi-info-circle-fill"></i> ` + message;
+  notification.appendChild(newP);
+}
 
 export function testNotification(message) {
   let notification = document.getElementById("notification");
@@ -163,7 +180,7 @@ export function getLocalStorage(value){
   return localStorage.getItem(value)
 }
 
-function getUserToken(){
+export function getUserToken(){
   return sessionStorage.getItem("token")
 }
 
