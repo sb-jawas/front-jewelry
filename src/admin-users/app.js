@@ -1,8 +1,18 @@
-import { domain, asyncApiRequest, formatDate, sendNotification, redirectToMyRol } from "../utils/funcs.js";
+import { asyncUser } from "../http/user.js";
+import { domain, asyncApiRequest, formatDate, sendNotification, redirectToMyRol, patterName, patternMail, patternPass, patternDate } from "../utils/funcs.js";
 
 const table = document.getElementById("table");
 let searchUser = document.getElementById("searchUser")
 let countUsers = document.getElementById("countUsers")
+let addUser = document.getElementById("addUser")
+
+let btnbajaUser = document.getElementById("baja")
+let btnProgramBaja = document.getElementById("programBaja")
+let btnActiveUser = document.getElementById("activarUser")
+let buttonFooter = document.getElementById("buttons")
+let saveUser = document.getElementById("save")
+let changePass = document.getElementById("changePass")
+let bodyModal = document.getElementById("bodyModal")
 
 let url = domain + "/api/admin";
 let methodApi = "GET";
@@ -72,3 +82,88 @@ searchUser.addEventListener('input',function(event){
     createTable(data)
   })
 })
+
+addUser.addEventListener('click', function(){
+  document.getElementById("userName").innerHTML = "Nuevo usuario"
+  
+
+
+  btnbajaUser.setAttribute("hidden",true) 
+  btnProgramBaja.setAttribute("hidden",true) 
+  btnActiveUser.setAttribute("hidden",true) 
+  saveUser.setAttribute("hidden",true) 
+  changePass.setAttribute("hidden",true) 
+
+  let btnCreate = createBtn("Crear usuario", "btn btn-outline-success") 
+  let btnPrg = createBtn("Programar alta", "btn btn-outline-warning") 
+
+  btnPrg.addEventListener('click',function(){
+    btnPrg.disabled = true
+    let label = document.createElement("label")
+    label.innerText = "Seleccione el día en el cual se hará efectivo el acceso al sistema."
+
+    let labelEnd = document.createElement("label")
+    labelEnd.innerText = "Opcional: Último que el usuario podrá acceder al sistema."
+    bodyModal.appendChild(label)
+    bodyModal.appendChild(createInput("start_at"))
+    bodyModal.appendChild(labelEnd)
+    bodyModal.appendChild(createInput("end_at"))
+  })
+
+  btnCreate.addEventListener('click',function(){
+    let inputData = document.getElementsByName("inputData")
+    let arr = {}
+
+    inputData.forEach(element =>{
+      if(element.value.length>=1){
+        if(element.type == "date"){
+          let change = element.value.replace("-","/").replace("-","/")
+          
+          if(myTest[element.id].test(change)){
+            arr[element.id] = change
+          }
+        }
+        if(myTest[element.id].test(element.value)){
+          arr[element.id] = element.value
+        }
+      }
+    })
+    let bodyContent = JSON.stringify(arr)
+    let url = domain + "/api/admin/"
+    asyncApiRequest("POST",url, bodyContent).then(function(data){
+      console.log(data)
+    }).catch(function(error){
+      console.log(error)
+    })
+  })
+
+  buttonFooter.appendChild(btnCreate)
+  buttonFooter.appendChild(btnPrg)
+
+})
+
+function createBtn(value, typeClass){
+  let newBtn = document.createElement("button")
+  newBtn.setAttribute("class",typeClass) 
+  newBtn.innerText = value
+  return newBtn
+}
+
+function createInput(id){
+  let newInputData = document.createElement("input")
+  newInputData.setAttribute("class","form-control")
+  newInputData.setAttribute("data-provide","datepicker") 
+  newInputData.setAttribute("name","inputData") 
+  newInputData.setAttribute("type","date") 
+  newInputData.setAttribute("id", id)
+
+  return newInputData
+}
+
+let myTest = {
+  "name" : patterName,
+  "name_empresa" : patterName,
+  "email" : patternMail,
+  "start_at" : patternDate,
+  "end_at" : patternDate
+}

@@ -183,6 +183,7 @@ export function checkByPattern(partternRegex, value) {
 export let patterName = /^[a-zA-Z-\s]{3,20}$/;
 export let patternMail = /^[\w-\.]+@([\w-]+\.)+[a-z]{3,4}$/;
 export let patternPass = /^[a-zA-Z0-9\-.*#$]{8,14}$/;
+export let patternDate = /\d{4}\/\d{1,2}\/\d{1,2}/;
 
 export function redirectToMyRol(rolView){
   if(getUserToken() != null){

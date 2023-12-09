@@ -20,9 +20,9 @@
         </div>
         <div class="col-4">
           <label for="">Busca un usuario por su correo.</label>
-          <input type="text" class="form-control mt-1" id="searchUser" placeholder="usuario@foo.tld">
+          <input type="text" class="form-control mt-1" id="searchUser"  placeholder="usuario@foo.tld">
         </div>
-        <input type="button" value="Agregar un nuevo usuario" class="btn btn-info mt-3">
+        <input type="button" value="Agregar un nuevo usuario" id="addUser" data-bs-target="#modalProfile" data-bs-toggle="modal" class="btn btn-info mt-3">
         <table class="table table-striped" id="table">
             <thead>
               <tr>
@@ -38,18 +38,19 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="userName">User name</h1>
+        <h1 class="modal-title fs-5" id="userName">Card user</h1>
+        
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form class="row g-3" onsubmit="event.preventDefault();" id="table">
-          <div class="col-md-5">
+        <form class="row g-3" onsubmit="event.preventDefault();" >
+          <div class="col" id="bodyModal">
             <label class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="nameUser" required />
+            <input type="text" class="form-control" id="name" name="inputData"/>
             <label class="form-label">Nombre de empresa</label>
-            <input type="text" class="form-control" id="nameEmpresa" aria-describedby="inputGroupPrepend2" required />
+            <input type="text" class="form-control" id="name_empresa" aria-describedby="inputGroupPrepend2"  name="inputData"/>
             <label class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" required />
+            <input type="email" class="form-control" id="email"  name="inputData"/>
           </div>
           <div class="row">
             <div class="col-md-5">
@@ -60,13 +61,13 @@
             </div>
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-success">Guardar cambios</button>
-          <input type="button" class="btn btn-info" value="Cambiar contraseña"/>
+        <div class="modal-footer" id="buttons">
+          <button type="button" id="save" class="btn btn-success">Guardar cambios</button>
+          <input type="button" id="changePass" class="btn btn-info" value="Cambiar contraseña"/>
           <br>
-          <button type="button" class="btn btn-outline-warning">Dar de baja</button>
-        <button type="button" class="btn btn-outline-warning">Programar baja</button>
-        <button type="button" class="btn btn-outline-success">Activar usuario</button>
+          <button type="button" id="baja" class="btn btn-outline-warning">Dar de baja</button>
+        <button type="button" id="programBaja" class="btn btn-outline-warning">Programar baja</button>
+        <button type="button" id="activarUser" class="btn btn-outline-success">Activar usuario</button>
       </div>
     </div>
   </div>

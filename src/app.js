@@ -33,7 +33,7 @@ document.getElementById("submit").addEventListener("click", () => {
     })
 
     let url = domain + "/api/login"
-    asyncUser(url, bodyContent).then(function(data){
+    asyncUser("POST",url, bodyContent).then(function(data){
         if(data["token"] != undefined){
             sessionStorage.setItem("token", data["token"])
             localStorage.setItem("userId", data["user_id"])

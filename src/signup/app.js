@@ -85,7 +85,7 @@ btnSubmit.addEventListener("click", function () {
         });
         let url = domain + "/api/signup";
 
-        asyncUser(url, bodyContent)
+        asyncUser("POST",url, bodyContent)
           .then(function (result) {
             console.log(result["status"]);
             if (result["status"] == 200){
