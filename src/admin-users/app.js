@@ -13,6 +13,9 @@ let buttonFooter = document.getElementById("buttons")
 let saveUser = document.getElementById("save")
 let changePass = document.getElementById("changePass")
 let bodyModal = document.getElementById("bodyModal")
+let groupData = document.getElementById("groupDate")
+let inputData = document.getElementsByName("inputData")
+
 
 let btnCreate = createBtn("Crear usuario", "btn btn-outline-success") 
 let btnPrg = createBtn("Programar alta", "btn btn-outline-warning") 
@@ -52,6 +55,9 @@ function createTable(data) {
         btn.setAttribute("data-bs-target" , "#modalProfile")
         btn.setAttribute("class", "btn btn-primary")
         btn.addEventListener('click',function(event){
+          if(groupData != null){
+            groupData.remove()
+          }
           let btns = [btnbajaUser, btnProgramBaja, btnActiveUser ,  saveUser,  changePass];
           switchHiddenBtns(btns, false)
           let btn2 = [btnPrg, btnCreate];
@@ -60,8 +66,13 @@ function createTable(data) {
           let url = domain + "/api/user/" + userId
           asyncApiRequest("GET",url).then(function(user){
             document.getElementById("userName").innerHTML = "ID usuario: " + user.msg.id
-          })
+            let i = 0
+            while(i<inputData.length){
+              inputData[i].value = user.msg[inputData[i].id]
+              i++
+            }
         })
+      })
         cell.appendChild(btn);
         }else{
           const cellText = document.createTextNode(arrDatos[i][arr[j]]);
@@ -104,19 +115,26 @@ addUser.addEventListener('click', function(){
 
   btnPrg.addEventListener('click',function(){
     btnPrg.disabled = true
+    let newDiv = document.createElement("div")
+    newDiv.id ="groupDate"
+
     let label = document.createElement("label")
     label.innerText = "Seleccione el día en el cual se hará efectivo el acceso al sistema."
 
     let labelEnd = document.createElement("label")
     labelEnd.innerText = "Opcional: Último que el usuario podrá acceder al sistema."
-    bodyModal.appendChild(label)
-    bodyModal.appendChild(createInput("start_at"))
-    bodyModal.appendChild(labelEnd)
-    bodyModal.appendChild(createInput("end_at"))
+
+    let starAt = createInput("start_at")
+    let endAt = createInput("end_at")
+
+    newDiv.appendChild(label)
+    newDiv.appendChild(starAt)
+    newDiv.appendChild(labelEnd)
+    newDiv.appendChild(endAt)
+    bodyModal.appendChild(newDiv)
   })
 
   btnCreate.addEventListener('click',function(){
-    let inputData = document.getElementsByName("inputData")
     let arr = {}
 
     inputData.forEach(element =>{
@@ -136,7 +154,7 @@ addUser.addEventListener('click', function(){
     let bodyContent = JSON.stringify(arr)
     let url = domain + "/api/admin/"
     asyncApiRequest("POST",url, bodyContent).then(function(data){
-      console.log(data)
+      sendNotification("Usuario creado","alert alert-success")
     }).catch(function(error){
       console.log(error)
     })
