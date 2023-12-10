@@ -19,10 +19,10 @@ let userId = document.getElementById("userId")
 let userImage = document.getElementById("profile")
 let newImage = document.getElementById("newImage")
 
-let rolAdmin = document.getElementById("admin")
-let rolDesigner = document.getElementById("designer")
-let rolClas = document.getElementById("clasificador")
-let rolCol = document.getElementById("colaborador")
+let rolAdmin = document.getElementById("1")
+let rolDesigner = document.getElementById("2")
+let rolClas = document.getElementById("3")
+let rolCol = document.getElementById("4")
 
 
 let btnCreate = createBtn("Crear usuario", "btn btn-outline-success") 
@@ -266,16 +266,20 @@ saveUser.addEventListener('click', function(event){
   let inputData = document.getElementsByName("inputData")
   let arr = {}
   let bodyImage = new FormData();
+  let roles = []
+
   inputData.forEach(element =>{
     if(element.id != "profile" && element.id != "newImage" && element.type != "checkbox" ){
       if(element.value.length>=1){
         if(myTest[element.id].test(element.value)){
-          arr[`${element.id}`] = `${element.value}`
+          arr[element.id] = element.value
         }
       }
     }
     if(element.type == "checkbox"){
-      arr[element.id] = element.checked
+      if(element.checked){
+        roles.push({"rol_id" :  element.id, "user_id":userId})
+      }
     }
     if(element.type == "file" && element.files.length>=1){
       console.log(element.files)
@@ -292,7 +296,7 @@ saveUser.addEventListener('click', function(event){
       }, 2000)
     })
   }
-  let bodyContent = JSON.stringify(arr)
+  let bodyContent = JSON.stringify(roles)
   console.log(bodyContent)
   if(bodyContent>2){
     let url = domain + "/api/user/" + userId
@@ -319,6 +323,12 @@ saveUser.addEventListener('click', function(event){
       }
     })
   }
+
+  let url = domain + "/api/admin/"+userId +"/roles"
+  let bodyRoles = JSON.stringify(roles)
+  asyncApiRequest("PUT", url, bodyRoles).then(function(data){
+    console.log(data)
+  })
 })
 
 newImage.addEventListener('change', function(event){
