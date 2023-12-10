@@ -19,6 +19,11 @@ let userId = document.getElementById("userId")
 let userImage = document.getElementById("profile")
 let newImage = document.getElementById("newImage")
 
+let rolAdmin = document.getElementById("admin")
+let rolDesigner = document.getElementById("designer")
+let rolClas = document.getElementById("clasificador")
+let rolCol = document.getElementById("colaborador")
+
 
 let btnCreate = createBtn("Crear usuario", "btn btn-outline-success") 
 let btnPrg = createBtn("Programar alta", "btn btn-outline-warning") 
@@ -75,6 +80,30 @@ function createTable(data) {
             document.getElementById("userName").innerHTML = "ID usuario: " + user.msg.id
             userImage.setAttribute("src", user.msg.profile)
             
+            let j = 0
+            while(j<user.msg.roles.length){
+              switch (user.msg.roles[j].id) {
+                case 1:
+                  rolCol.checked = true
+                break;
+
+                case 2:
+                  rolClas.checked = true
+                
+                break;
+
+                case 3:
+                  rolDesigner.checked = true
+                
+                break;
+                case 4:
+                  rolAdmin.checked = true
+                
+                break;
+              }
+              j++
+            }
+
             let i = 0
             while(i<inputData.length){
               inputData[i].placeholder = user.msg[inputData[i].id]
@@ -238,12 +267,15 @@ saveUser.addEventListener('click', function(event){
   let arr = {}
   let bodyImage = new FormData();
   inputData.forEach(element =>{
-    if(element.id != "profile" && element.id != "newImage" ){
+    if(element.id != "profile" && element.id != "newImage" && element.type != "checkbox" ){
       if(element.value.length>=1){
         if(myTest[element.id].test(element.value)){
           arr[`${element.id}`] = `${element.value}`
         }
       }
+    }
+    if(element.type == "checkbox"){
+      arr[element.id] = element.checked
     }
     if(element.type == "file" && element.files.length>=1){
       console.log(element.files)
@@ -264,7 +296,6 @@ saveUser.addEventListener('click', function(event){
   console.log(bodyContent)
   if(bodyContent>2){
     let url = domain + "/api/user/" + userId
-    
     asyncUser("PUT",url, bodyContent).then(function(data){
       if(typeof data == "object" ){
         sendNotificationModal("Usuario actualizado correctamente","alert alert-success")
