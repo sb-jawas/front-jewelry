@@ -65,7 +65,7 @@ function createTable(data) {
     let j = 0;
     while (j < arr.length) {
       const cell = document.createElement("td");
-      if (j == 2) {
+      if (j == 2) { 
         let btn = document.createElement("button");
         let deleteUser = createBtn("Eliminar usuario", "btn btn-danger m-1");
 
@@ -87,7 +87,7 @@ function createTable(data) {
           btnActiveUser = document.getElementById("activarUser");
           saveUser = document.getElementById("save");
           changePass = document.getElementById("changePass");
-          btns = [
+          let btns = [
             btnbajaUser,
             btnProgramBaja,
             btnActiveUser,
@@ -104,6 +104,18 @@ function createTable(data) {
           asyncApiRequest("GET", url).then(function (user) {
             document.getElementById("userName").innerHTML =
               "ID usuario: " + user.msg.id;
+
+              if(user.msg.end_at==null){
+                btnActiveUser.hidden = true
+              }else{
+                if(user.msg.end_at>=user.msg.start_at){
+                  btnActiveUser.hidden = false
+                  btnProgramBaja.hidden = true
+                  btnbajaUser.hidden = true
+                  debugger
+                }
+              }
+
             userImage.setAttribute("src", user.msg.profile);
 
             offCheckBox();
@@ -442,7 +454,27 @@ function offCheckBox() {
 
 
 btnProgramBaja.addEventListener('click', function(){
+  let url = domain + "/api/admin/" + userId + "/program-desactivate"
   asyncApiRequest('PUT', url, bodyContent).then(function(){
+    console.log(data)
+    sendNotificationModal("Se ha programado la baja del usuario para el: ", "alert alert-success")
 
+  })
+})
+
+btnbajaUser.addEventListener('click', function(){
+  let url = domain + "/api/admin/" + userId + "/desactivate-account"
+  asyncApiRequest('PUT', url).then(function(data){
+    console.log(data)
+    sendNotificationModal("Usuario dado de baja correctamente.", "alert alert-success")
+
+  })
+})
+
+btnActiveUser.addEventListener('click', function(){
+  let url = domain + "/api/admin/" + userId + "/activate-account"
+  asyncApiRequest('GET', url).then(function(data){
+    console.log(data)
+    sendNotificationModal("Usuario dado de alta", "alert alert-success")
   })
 })
