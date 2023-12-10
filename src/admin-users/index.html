@@ -2,87 +2,118 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.css">
-    <link rel="stylesheet" href="../../node_modules/bootstrap-icons/font/bootstrap-icons.css">
-   <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" href="../../node_modules/bootstrap-icons/font/bootstrap-icons.css">
+  <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="style.css">
-    <title>Lote</title>
+  <title>Lote</title>
 </head>
 
 <body>
-    <div class="container">
-        <h1>Adminstración de usuarios</h1>
-        <div id="notification"><div id="noti"></div></div>
-        <label id="countUsers"></label>
-        <div class="col-4">              
-        </div>
-        <div class="col-4">
-          <label for="">Busca un usuario por su correo.</label>
-          <input type="text" class="form-control mt-1" id="searchUser"  placeholder="usuario@foo.tld">
-        </div>
-        <input type="button" value="Agregar un nuevo usuario" id="addUser" data-bs-target="#modalProfile" data-bs-toggle="modal" class="btn btn-info mt-3">
-        <table class="table table-striped" id="table">
-            <thead>
-              <tr>
-                <th scope="col">Nombre</th>
-                <th scope="col">e-mail</th>
-              </tr>
-            </thead>
-            <tbody id="tbody"></tbody>
-          </table>
+  <div class="container">
+    <h1>Adminstración de usuarios</h1>
+    <div id="notification">
+      <div id="noti"></div>
     </div>
+    <label id="countUsers"></label>
+    <div class="col-4">
+    </div>
+    <div class="col-4">
+      <label for="">Busca un usuario por su correo.</label>
+      <input type="text" class="form-control mt-1" id="searchUser" placeholder="usuario@foo.tld">
+    </div>
+    <input type="button" value="Agregar un nuevo usuario" id="addUser" data-bs-target="#modalProfile"
+      data-bs-toggle="modal" class="btn btn-info mt-3">
+    <table class="table table-striped" id="table">
+      <thead>
+        <tr>
+          <th scope="col">Nombre</th>
+          <th scope="col">e-mail</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
 
-<div class="modal fade modal-xl" id="modalProfile" width="80" tabindex="-1" aria-labelledby="modalProfile" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="userName">Card user</h1>
-        
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div id="notificationModal"><div id="notiModal"></div></div>
-        <form class="row g-3" onsubmit="event.preventDefault();" >
-          <div class="col" >
+  <div class="modal fade modal-xl" id="modalProfile" width="80" tabindex="-1" aria-labelledby="modalProfile"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="userName">Card user</h1>
+
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="notificationModal">
+            <div id="notiModal"></div>
+          </div>
+          <form class="row g-3" onsubmit="event.preventDefault();">
+            <div class="col">
               <img class="mb-4" id="profile" name="inputData">
-              <input id="newImage" name="inputData" class="form-control mt-4" type="file" accept="image/png, image/jpeg" >
-          </div>
-          
-          <div class="col" id="bodyModal">
+              <input id="newImage" name="inputData" class="form-control mt-4" type="file"
+                accept="image/png, image/jpeg">
+            </div>
 
-            <label class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="name" name="inputData"/>
-            <label class="form-label">Nombre de empresa</label>
-            <input type="text" class="form-control" id="name_empresa" aria-describedby="inputGroupPrepend2"  name="inputData"/>
-            <label class="form-label">Email</label>
-            <input type="email" class="form-control" id="email"  name="inputData"/>
-          </div>
-          <div class="row">
-            <div class="col-md-5">
-              <div class="input-group">
+            <div class="col" id="bodyModal">
+
+              <label class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="name" name="inputData"  alt="Nombre del usuario" />
+              <label class="form-label">Nombre de empresa</label>
+              <input type="text" class="form-control" id="name_empresa" aria-describedby="inputGroupPrepend2"
+                name="inputData"  alt="Nombre de la empresa"/>
+              <label class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" name="inputData" alt="Correo electronico" />
+              <h4 class="mt-2">Roles</h4>
+              <div class="col" id="checkRoles">
+                <div class="col">
+
+                  <input type="checkbox" id="4" name="inputData" class="form-check-input">
+                  <label for="">Admin</label>
+                </div>
+                <div class="col">
+
+                  <input type="checkbox" id="3" name="inputData" class="form-check-input">
+                  <label for="">Diseñador</label>
+                </div>
+                <div class="col">
+
+                  <input type="checkbox" id="2" name="inputData" class="form-check-input">
+                  <label for="">Clasificador</label>
+                </div>
+                <div class="col">
+
+                  <input type="checkbox" id="1" name="inputData" class="form-check-input">
+                  <label for="">Colaborador</label>
+                </div>
               </div>
             </div>
-            <div class="col-md-7">
+            <div class="row">
+              <div class="col-md-5">
+                <div class="input-group">
+                </div>
+              </div>
+              <div class="col-md-7">
+              </div>
             </div>
-          </div>
         </div>
         <div id="userId"></div>
         <div class="modal-footer" id="buttons">
           <button type="button" id="save" class="btn btn-primary">Guardar cambios</button>
-          <input type="button" id="changePass" class="btn btn-warning" value="Cambiar contraseña"/>
+          <input type="button" id="changePass" class="btn btn-warning" value="Cambiar contraseña" />
           <br>
           <button type="button" id="baja" class="btn btn-danger">Dar de baja</button>
-        <button type="button" id="programBaja" class="btn btn-warning">Programar baja</button>
-        <button type="button" id="activarUser" class="btn btn-success">Activar usuario</button>
+          <button type="button" id="programBaja" class="btn btn-warning">Programar baja</button>
+          <button type="button" id="activarUser" class="btn btn-success">Activar usuario</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-    <script type="module" src="app.js"></script>
-    <script src="../../node_modules/bootstrap/dist/js/bootstrap.js"></script>
+  <script type="module" src="app.js"></script>
+  <script src="../../node_modules/bootstrap/dist/js/bootstrap.js"></script>
 </body>
 
 </html>
