@@ -19,7 +19,7 @@ btnSubmit.addEventListener('click', function(){
 
     let bodyImage = new FormData();
     bodyImage.append("image", (newImage.files[0]))
-    let url = domain + "/api/image"
+    let url = domain + "/api/joyas/image"
     uploadImage("POST", url, bodyImage).then(function(resImage){
         let url = domain + "/api/joyas"
         let bodyContent = JSON.stringify({
