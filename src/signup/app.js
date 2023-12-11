@@ -1,4 +1,4 @@
-import { asyncUser } from "../http/user.js";
+import { asyncUser, uploadImage } from "../http/user.js";
 import {
   domain,
   empty,
@@ -6,9 +6,9 @@ import {
   setValidationBootstrap,
   patterName,
   patternMail,
-  patternPass 
-
+  patternPass,
 } from "../utils/funcs.js";
+import { redirect } from "../utils/routes.js";
 
 let nameUser = document.getElementById("nameUser");
 let nameEmpresa = document.getElementById("nameEmpresa");
@@ -17,6 +17,8 @@ let pass = document.getElementById("password");
 let pass2 = document.getElementById("passwordConfirm");
 let btnSubmit = document.getElementById("btn-submit");
 let table = document.getElementById("table");
+let img = document.getElementById("img");
+let newImage = document.getElementById("newImage");
 
 nameUser.addEventListener("input", function (event) {
   if (patterName.test(event.target.value)) {
@@ -76,47 +78,81 @@ btnSubmit.addEventListener("click", function () {
     if (arrCh[0] < 6) {
       if (pass.value == pass2.value) {
         btnSubmit.setAttribute("disabled", true);
-
-        let bodyContent = JSON.stringify({
-          name: nameUser.value,
-          email: email.value,
-          password: pass.value,
-          name_empresa: nameEmpresa.value,
-        });
-        let url = domain + "/api/signup";
-
-        asyncUser("POST",url, bodyContent)
-          .then(function (result) {
-            console.log(result["status"]);
-            if (result["status"] == 200){
-                console.log("entro")
-                sendNotification("Usuario registrado correctamente", "alert alert-success");
-            }
-            if(result["status"] == undefined){
+        let url = domain + "/api/signup/image";
+        if (newImage.files.length >= 1) {
+          let bodyImage = new FormData();
+          bodyImage.append("image", newImage.files[0]);
+          uploadImage("POST", url, bodyImage).then(function (resImage) {
+            let bodyContent = JSON.stringify({
+              name: nameUser.value,
+              email: email.value,
+              password: pass.value,
+              name_empresa: nameEmpresa.value,
+              profile: resImage.url,
+            });
+            let url = domain + "/api/signup";
+            asyncUser("POST", url, bodyContent).then(function (result) {
+              if (result["status"] == 200) {
+                sendNotification(
+                  "Usuario registrado correctamente",
+                  "alert alert-success"
+                );
+                setTimeout(() => {
+                  location.href = redirect["login"];
+                }, 3000);
+              }
+              if (result["status"] == undefined) {
                 let parseData = JSON.parse(result);
-                let error = parseData.msg.email[0];
-                let error2 = parseData.msg.name_empresa[0];
-                let errors = [error, error2];
-                let mess = "Errores: <ul>";
-                errors.forEach((element) => {
-                    if (element.length > 1) {
-                        mess += "<li>" + element + "</li>";
-                    }
-                });
-                mess += "</ul>";
-                
-                sendNotification(mess, "alert alert-danger");
 
+                const { msg } = parseData;
+                let mess = "Errores: <ul>";
+                for (let errores in msg) {
+                  let errorMsg = msg[errores];
+                  errorMsg.forEach((mensaje) => {
+                    mess += "<li>" + mensaje + "</li>";
+                  });
+                }
+                mess += "</ul>";
+
+                sendNotification(mess, "alert alert-danger");
+              }
+            });
+          });
+        } else {
+          let bodyContent = JSON.stringify({
+            name: nameUser.value,
+            email: email.value,
+            password: pass.value,
+            name_empresa: nameEmpresa.value,
+          });
+          let url = domain + "/api/signup";
+          asyncUser("POST", url, bodyContent).then(function (result) {
+            if (result["status"] == 200) {
+              sendNotification(
+                "Usuario registrado correctamente",
+                "alert alert-success"
+              );
+              setTimeout(() => {
+                location.href = redirect["login"];
+              }, 3000);
             }
-          })
-          .catch(function (error) {
-            // console.log(JSON.parse(error))
+            if (result["status"] == undefined) {
+              let parseData = JSON.parse(result);
+
+              const { msg } = parseData;
+              let mess = "Errores: <ul>";
+              for (let errores in msg) {
+                let errorMsg = msg[errores];
+                errorMsg.forEach((mensaje) => {
+                  mess += "<li>" + mensaje + "</li>";
+                });
+              }
+              mess += "</ul>";
+
+              sendNotification(mess, "alert alert-danger");
+            }
           });
-        setTimeout(function () {
-          table.addEventListener("input", function () {
-            document.getElementById("btn-submit").removeAttribute("disabled");
-          });
-        }, 2000);
+        }
       } else {
         sendNotification("La contraseña no coincide", "alert alert-danger");
       }
@@ -216,3 +252,7 @@ function listEmpty(arrList, titleErrorMsg) {
   rtnList += "</ul>";
   return rtnList;
 }
+
+newImage.addEventListener("change", function (event) {
+  img.src = URL.createObjectURL(event.target.files[0]);
+});
