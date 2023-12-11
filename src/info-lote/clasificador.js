@@ -132,7 +132,7 @@ export function mainClasificador(lote) {
   }
 }
 
-function createList(componentes) {
+export function createList(componentes) {
   let lista = document.createElement("select");
   lista.setAttribute("class", "form-select");
   lista.setAttribute("id", "listaComponentes");
