@@ -112,9 +112,10 @@ let myTest = {
 
 btnLogout.addEventListener('click',function(){
 
-  // logout().then(function(data){
-  //   console.log(data)
-  // })
+  let url = domain + '/api/full-logout/'+getLocalStorage("userId")
+  logout(url).then(function(data){
+    console.log(data)
+  })
 
 })
 
@@ -122,7 +123,7 @@ btnFoto.addEventListener('click', function(){
   let bodyImage = new FormData();
   bodyImage.append("image", newImage.files[0]);
   let url = domain + "/api/image"
-
+console.log(bodyImage.get('image'))
   uploadImage("POST", url, bodyImage).then(function (resImage) {
     console.log(resImage);
     let bodyContent = JSON.stringify({
