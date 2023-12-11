@@ -16,6 +16,7 @@ asyncApiRequest(method, url).then(function(resData){
         console.log(rolRoute[resData[0].name])
         while(i<resData.length){
             let option = document.createElement("option")
+            option.id = resData.length-i
             option.text = resData[i].name
             option.href = rolRoute[resData[i].name]
             lista.appendChild(option)
@@ -30,7 +31,7 @@ submitRol.addEventListener('click', function(){
     let i = 0
     while(i<lista.length){
         if(lista[i].selected){
-
+            localStorage.setItem("rolId",lista[i].id)
             window.location.href = lista[i].href
         }
         i++
