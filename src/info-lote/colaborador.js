@@ -18,9 +18,10 @@ export function mainColaborador(lote){
                 let getUserLocal = localStorage.getItem("userId")
                 let getLoteLocal = localStorage.getItem("loteId")
 
-                let url = domain + "/api/empresa/mis-lotes/"+getUserLocal+"/cancelar"
+                let url = domain + "/api/colaborador/lote/"+getUserLocal+"/cancelar"
                 let bodyContent = JSON.stringify({
-                    "lote_id": getLoteLocal
+                    "lote_id": getLoteLocal,
+                    "user_id":getUserLocal
                   });
                 
                 asyncApiRequest("PUT",url, bodyContent)

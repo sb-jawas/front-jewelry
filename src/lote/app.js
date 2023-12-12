@@ -1,11 +1,12 @@
-import { sendNotification, domain, asyncApiRequest } from "../utils/funcs.js";
+import { sendNotification, domain, asyncApiRequest, getLocalStorage } from "../utils/funcs.js";
+import { navbar } from "../utils/navbar.js";
 import { geocode } from "./maps.js";
 
 let obs = document.getElementById("obs");
 let ubi = document.getElementById("ubi");
 let btn = document.getElementById("btn");
 
-
+navbar(getLocalStorage("userName"),"Colaborador")
 // btn.addEventListener("click", function (event) {
 //     geocode({ address: ubi.value }).then(function(){
 

@@ -2,7 +2,16 @@ import { activeButtons, asyncApiRequest, domain, getLocalStorage, sendNotificati
 
 export function createComponente(bodyContent){
     let method = "POST"
-    let url = domain + "/api/componentes"
+    let url = domain 
+    let rolId = getLocalStorage('rolId')
+    switch (rolId) {
+        case "2":
+            url += "/api/componentes/"
+        break;
+        case "4":
+            url += "/api/admin/componentes/"
+        break;
+    }
 
     asyncApiRequest(method,url,bodyContent).then(function(){
         sendNotification("Componente creado correctamente.","alert alert-success")
@@ -13,8 +22,17 @@ export function createComponente(bodyContent){
 }
 
 export function updateComponente(bodyContent, componenteId){
-    let method = "PATCH"
-    let url = domain + "/api/componentes/"+componenteId
+    let method = "PUT"
+    let url = domain 
+    let rolId = getLocalStorage('rolId')
+    switch (rolId) {
+        case "2":
+            url += "/api/componentes/"+componenteId
+        break;
+        case "4":
+            url += "/api/admin/componentes/"+componenteId
+        break;
+    }
 
     asyncApiRequest(method,url,bodyContent).then(function(){
         sendNotification("Componente actualizado correctamente.","alert alert-success")

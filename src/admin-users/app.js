@@ -141,6 +141,7 @@ function createTable(data) {
 
                   break;
               }
+              
               j++;
             }
 
@@ -435,6 +436,10 @@ checkboxRoles.addEventListener("change", function () {
           "Roles actualizados correctamente",
           "alert alert-success"
         );
+        let url = domain + '/api/full-logout/'+ userId
+        asyncApiRequest('POST', url).then(function(data){
+          console.log(data)
+        })
       } else {
         sendNotificationModal(
           "No se ha podido actualizar el rol",
@@ -455,6 +460,9 @@ function offCheckBox() {
 
 btnProgramBaja.addEventListener('click', function(){
   let url = domain + "/api/admin/" + userId + "/program-desactivate"
+  let bodyContent = JSON.stringify({
+    end_at : '2000/01/01'
+  })
   asyncApiRequest('PUT', url, bodyContent).then(function(){
     console.log(data)
     sendNotificationModal("Se ha programado la baja del usuario para el: ", "alert alert-success")

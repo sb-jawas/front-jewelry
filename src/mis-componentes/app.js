@@ -18,7 +18,7 @@ switch (getLocalStorage("rolId")) {
     break;
 
   case "4":
-    url += "/api/componentes";
+    url += "/api/componentes/admin";
 
     break;
 
@@ -164,16 +164,17 @@ function createBtn() {
         }
 
         if(vec[3]){
-            vec[3] = 1
+            vec[3] = "1"
         }else{
-            vec[3] = 0
+            vec[3] = "0"
         }
         
         
         let bodyContent = JSON.stringify({
+            "user_id":getLocalStorage("userId"),
             "name": vec[1],
             "desc": vec[2],
-            "is_hardware":vec[3]
+            "is_hardware": vec[3]
         })
         
         disableButtons()
@@ -202,7 +203,7 @@ function createBtn() {
               break;
           
             case "4":
-              url += "/api/componentes/"+id
+              url += "/api/componentes/admin"+id
           
               break;
           }

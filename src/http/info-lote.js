@@ -1,9 +1,20 @@
-import { asyncApiRequest, createListCell, domain, sendNotification } from "../utils/funcs.js";
+import { asyncApiRequest, createListCell, domain, getLocalStorage, sendNotification } from "../utils/funcs.js";
 
 const tblBody = document.getElementById("tbody");
 export function cargarLote() {
-  let getLoteLocal = localStorage.getItem("loteId");
-  let url = domain + "/api/info-despiece/" + getLoteLocal;
+  let getLoteLocal = getLocalStorage("loteId");
+  let getRolLocal = getLocalStorage("rolId")
+
+  let url = domain 
+  switch (getRolLocal) {
+    case "1":
+      url += "/api/colaborador/info-despiece/" + getLoteLocal;
+      break;
+      case "2":
+      url += "/api/clasificador/info-despiece/" + getLoteLocal;
+      break;
+  }
+
   let clasificado = document.getElementById("clasificado")
   asyncApiRequest("GET", url).then(function (data) {
 
