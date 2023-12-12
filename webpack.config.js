@@ -5,13 +5,15 @@ module.exports = {
   entry: {
     users: './src/admin-users/app.js',
     crearComponentes: './src/crear-componente/app.js',
+    crearJoya: './src/crear-joya/app.js',
     forgetPass: './src/forget-pass/app.js',
     homeAdmin: './src/home-admin/app.js',
     homeDesigner: './src/home-designer/app.js',
     homeLote: './src/home-lote/app.js',
-    users: './src/admin-users/app.js',
+    homeClasi: './src/home-clasificador/app.js',
     infoLote: './src/info-lote/app.js',
     lote: './src/lote/app.js',
+    loteMaps: './src/lote/maps.js',
     loteClasificador:'./src/lote-clasificador/app.js',
     loteHistorial: './src/lote-historial/app.js',
     misComponentes: './src/mis-componentes/app.js',
@@ -19,6 +21,7 @@ module.exports = {
     profile: './src/my-profile/app.js',
     signup: './src/signup/app.js',
     login: './src/app.js',
+    selectRol: './src/selection-rol/app.js',
   
  },
   output: {
