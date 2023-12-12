@@ -1,4 +1,4 @@
-import { asyncUser } from "../http/user.js";
+import { asyncUser, logout, uploadImage } from "../http/user.js";
 import {
   domain,
   sendNotification,
@@ -15,13 +15,18 @@ let nameUser = document.getElementById("name");
 let nameEmpresa = document.getElementById("name_empresa");
 let email = document.getElementById("email");
 let pass = document.getElementById("password");
+let imgProfile = document.getElementById('imageProfile')
+let newImage = document.getElementById('newFoto')
 let btnSubmit = document.getElementById("btn-submit");
+let btnLogout= document.getElementById("btnFullLogout");
+let btnFoto = document.getElementById('btnFoto')
 
 let url = domain+"/api/user/"+getLocalStorage("userId")
 asyncApiRequest("GET", url).then(function(data){
   nameUser.setAttribute("placeholder" , data.msg.name)
   nameEmpresa.setAttribute("placeholder" , data.msg.name_empresa)
   email.setAttribute("placeholder" , data.msg.email)
+  imgProfile.setAttribute("src" , data.msg.profile)
 })
 
 nameUser.addEventListener("input", function (event) {
@@ -105,3 +110,37 @@ let myTest = {
   "password" : patternPass,
 }
 
+btnLogout.addEventListener('click',function(){
+
+  let url = domain + '/api/full-logout/'+getLocalStorage("userId")
+  logout(url).then(function(data){
+    console.log(data)
+  })
+
+})
+
+btnFoto.addEventListener('click', function(){
+  let bodyImage = new FormData();
+  bodyImage.append("image", newImage.files[0]);
+  let url = domain + "/api/image"
+console.log(bodyImage.get('image'))
+  uploadImage("POST", url, bodyImage).then(function (resImage) {
+    console.log(resImage);
+    let bodyContent = JSON.stringify({
+      profile:resImage.url
+    });
+    let url = domain + "/api/user/"+getLocalStorage('userId');
+    asyncApiRequest("PUT", url, bodyContent)
+      .then(function (data) {
+        console.log(data)
+        sendNotification("Foto de perfil actualizada", "alert alert-success");
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  });
+})
+
+newImage.addEventListener("change", function (event) {
+  imgProfile.src = URL.createObjectURL(event.target.files[0]);
+});
