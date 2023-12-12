@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="../../node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
     <title>Forget password</title>
 </head>
 <body class="bg-secondary">
@@ -14,8 +15,9 @@
                 <div class="col-5 mt-5 p-5 rounded shadow">
                     <p>Rellena el siguiente campo para poder recuperar la cuenta.</p>
                     <form class="col-7 " onsubmit="event.preventDefault()">
-                        <div id="notification"></div>
-                        <div class="mb-3">
+                        <div id="notification">
+                            <div id="noti"></div>
+                          </div>                        <div class="mb-3">
                             <label class="form-label">Email</label>
                             <input type="email" class="form-control" id="email" required/>
                             <input type="button" id="btnPass" autocomplete="email" value="Resetear contraseña" class=" m-5 btn btn-primary">
