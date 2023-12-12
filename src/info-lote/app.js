@@ -1,9 +1,10 @@
-import { domain, asyncApiRequest, formatDate, sendNotification, switchThem, changeMode, deleteButtons, asyncMaps } from "../utils/funcs.js";
+import { domain, asyncApiRequest, formatDate, sendNotification, switchThem, changeMode, deleteButtons, asyncMaps, getLocalStorage } from "../utils/funcs.js";
+import { navbar } from "../utils/navbar.js";
 import { redirect } from "../utils/routes.js";
 import { mainClasificador } from "./clasificador.js";
 import { mainColaborador } from "./colaborador.js";
 
-
+navbar(getLocalStorage("userName"),"Clasificador")
 
 let ubi = document.getElementById("ubi");
 let status = document.getElementById("status");

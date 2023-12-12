@@ -3,4 +3,4 @@ import { navbar } from "../utils/navbar.js";
 
 let rolView = 3
 redirectToMyRol(rolView)
-navbar(getLocalStorage("userName"),"Colaborador")
+navbar(getLocalStorage("userName"),"Diseñador")

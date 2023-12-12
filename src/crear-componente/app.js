@@ -1,5 +1,6 @@
 import { createComponente } from "../http/componente.js"
-import { getLocalStorage, sendNotification } from "../utils/funcs.js"
+import { getLocalStorage, redirectToMyRol, sendNotification } from "../utils/funcs.js"
+
 
 let nameComp = document.getElementById("name")
 let descComp = document.getElementById("desc")

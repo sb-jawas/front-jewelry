@@ -1,5 +1,10 @@
-import { asyncApiRequest, domain, formatDateWithTime } from "../utils/funcs.js"
+import { asyncApiRequest, domain, formatDateWithTime, getLocalStorage, redirectToMyRol } from "../utils/funcs.js"
+import { navbar } from "../utils/navbar.js"
 import { redirect } from "../utils/routes.js"
+
+let rolView = 2
+redirectToMyRol(rolView)
+navbar(getLocalStorage("userName"),"Clasificador")
 
 let tblBody = document.getElementById('tbody')
 let url = domain + '/api/clasificador/lotes'

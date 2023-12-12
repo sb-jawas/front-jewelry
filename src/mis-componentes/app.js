@@ -7,6 +7,9 @@ import {
   getLocalStorage,
   sendNotification,
 } from "../utils/funcs.js";
+import { navbar } from "../utils/navbar.js";
+
+
 
 let tblbody = document.getElementById("tbody");
 let methodApi = "GET";
@@ -15,10 +18,14 @@ let url = domain;
 switch (getLocalStorage("rolId")) {
   case "2":
     url += "/api/clasificador/" + getLocalStorage("userId") + "/componentes";
+    navbar(getLocalStorage("userName"),"Clasificador")
+
     break;
 
   case "4":
     url += "/api/componentes/admin";
+     navbar(getLocalStorage("userName"),"Admin")
+
 
     break;
 

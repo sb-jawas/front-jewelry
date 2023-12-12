@@ -2,6 +2,8 @@ import { sendNotification, domain, asyncApiRequest, getLocalStorage } from "../u
 import { navbar } from "../utils/navbar.js";
 import { geocode } from "./maps.js";
 
+navbar(getLocalStorage("userName"),"Colaborador")
+
 let obs = document.getElementById("obs");
 let ubi = document.getElementById("ubi");
 let btn = document.getElementById("btn");

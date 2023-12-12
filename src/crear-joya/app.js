@@ -1,6 +1,11 @@
 import { uploadImage } from "../http/user.js"
 import { createList } from "../info-lote/clasificador.js"
 import { asyncApiRequest, domain, getLocalStorage, sendNotification } from "../utils/funcs.js"
+import { navbar } from "../utils/navbar.js"
+
+let rolView = 4
+redirectToMyRol(rolView)
+navbar(getLocalStorage("userName"),"Diseñador")
 
 let btnSubmit = document.getElementById('btnSubmit')
 let newImage = document.getElementById('newImage')
