@@ -37,9 +37,10 @@ document.getElementById("submit").addEventListener("click", () => {
         if(data["token"] != undefined){
             sessionStorage.setItem("token", data["token"])
             localStorage.setItem("userId", data["user_id"])
+            localStorage.setItem("userName", data["user_name"])
             location.href="./selection-rol"
         }else{
-            sendNotification("No ha podido iniciar sesión con esas credenciales, inténtelo de nuevo, o registrese.","alert alert-success")
+            sendNotification("No ha podido iniciar sesión con esas credenciales, inténtelo de nuevo, o registrese.","alert alert-danger")
         }
     })
   }
