@@ -1,8 +1,8 @@
 export let rolRoute = {
-    "Colaborador" : "../lote",
-    "Clasificador": "../lote-clasificador",
-    "Diseñador": "../disign",
-    "Admin": "../admin",
+    "Colaborador" : "../home-lote",
+    "Clasificador": "../home-clasificador",
+    "Diseñador": "../home-designer",
+    "Admin": "../home-admin",
 }
 
 export let redirect = {
