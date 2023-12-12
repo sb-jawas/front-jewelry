@@ -1,4 +1,6 @@
-import { rolRoute } from "./routes.js"
+import { logout } from "../http/user.js"
+import { domain, getLocalStorage } from "./funcs.js"
+import { redirect, rolRoute } from "./routes.js"
 
 export function navbar(username, rol){
     let nav = document.getElementById("navbar")
@@ -32,14 +34,20 @@ export function navbar(username, rol){
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" id="logout" href="#">Cerrar sesión</a></li>
+                            <li><a class="dropdown-item" id="logout">Cerrar sesión</a></li>
                         </ul>
                     </li>
                 </div>
-
                 </div>
             </ul>
         </div>
     </div>
 </nav>`
+let logoutBtn = document.getElementById('logout')
+logoutBtn.addEventListener('click', function(){
+    let url = domain + '/api/logout/'+getLocalStorage('userId')    
+    logout(url).then(function(){
+        location.href = redirect['login']
+        })
+    })
 }
