@@ -5,7 +5,7 @@ import { redirect, rolRoute } from "./routes.js"
 export function navbar(username, rol){
     let nav = document.getElementById("navbar")
 
-    nav.innerHTML = `<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    nav.innerHTML = `<nav class="navbar navbar-dark navbar-expand-lg bg-body-dark bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand mx-3" href="#">Jawalry</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
