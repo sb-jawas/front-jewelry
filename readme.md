@@ -18,8 +18,9 @@ Al introducir ese comando, el repositorio con todos los ficheros del front se de
 ## Actualizar Dependencias
 
 Nos situaremos en la raíz del front, y abriremos una terminal en dicha ubicación. Una vez con el terminal abierto, pondremos el siguiente comando para actualizar:
-
+```
 npm update
+```
 
 
 Esperaremos unos segundos a que se termine de instalar todo y pasaremos al siguiente paso.
@@ -28,7 +29,9 @@ Esperaremos unos segundos a que se termine de instalar todo y pasaremos al sigui
 
 En la terminal, situados en la raíz del servidor, usaremos simplemente 1 comando que será el siguiente:
 
+```sh
+npm run build
 npm run dev
-
+```
 
 Si la terminal nos muestra una imagen similar a esta, el servidor ya está corriendo y el proyecto se puede ejecutar.
