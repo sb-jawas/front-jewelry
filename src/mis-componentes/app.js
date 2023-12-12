@@ -23,7 +23,7 @@ switch (getLocalStorage("rolId")) {
     break;
 
   case "4":
-    url += "/api/componentes/admin";
+    url += "/api/admin/componentes";
      navbar(getLocalStorage("userName"),"Admin")
 
 
