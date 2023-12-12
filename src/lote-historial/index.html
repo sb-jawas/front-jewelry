@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="../../node_modules/bootstrap-icons/font/bootstrap-icons.css">
+   <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+    <title>Lote | Historial</title>
+    <script type="module" src="app.js"></script>
+</head>
+<body>
+  <div id="navbar"></div>
+    <div class="container">
+        <h1 class="text-center">Historial de lotes</h1>
+        <div class="row m-5">
+            <div class="col rounded rounded shadow shadow-xl p-3">
+                <table class="table table-striped" id="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Empresa colaboradora</th>
+                        <th scope="col">Fecha de creación</th>
+                        <th scope="col">Estado</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tbody"></tbody>
+                  </table>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="../../dist/loteHistorial.js"></script>
+    <script type="module" src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+</body>
+</html>

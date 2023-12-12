@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="../../node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+    <title>Forget password</title>
+</head>
+<body class="bg-secondary">
+    <div class="container mt-3">
+        <div class="row mt-5 p-5 rounded shadow bg-light">
+            <h1 class="text-center">Formulario de recuperación de cuenta</h1>
+                <div class="col-5 mt-5 p-5 rounded shadow">
+                    <p>Rellena el siguiente campo para poder recuperar la cuenta.</p>
+                    <form class="col-7 " onsubmit="event.preventDefault()">
+                        <div id="notification">
+                            <div id="noti"></div>
+                          </div>                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" required/>
+                            <input type="button" id="btnPass" autocomplete="email" value="Resetear contraseña" class=" m-5 btn btn-primary">
+                        </div>
+                    </form>
+                </div>
+                <div class="col-2"></div>
+            <div class="col p-4">
+                <h4 class="mt-4">El poder lo tienes en las manos</h4>
+                <video height="400px" autoplay muted loop class="rounded shadow">
+                    <source src="https://project-jawas.s3.eu-west-3.amazonaws.com/a_star+wars+jawa+holding+a.mp4" type="video/mp4">>
+                </video>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="../../dist/forgetPass.js"></script>
+</body>
+</html>

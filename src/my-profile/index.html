@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" href="../../node_modules/bootstrap-icons/font/bootstrap-icons.css">
+  <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+
+  <title>Mi perfil</title>
+</head>
+
+<body class="bg-secondary">
+  <div id="navbar"></div>
+  <div class="container mt-5">
+    <div class="p-4 rounded shadow shadow bg-light">
+      <h1 class="text-center p-5">Mi perfil</h1>
+      <div id="notification">
+        <div id="noti"></div>
+      </div>
+      <div class="row">
+        <div class="col-4 m-5">
+          <h4>Cambiar foto de perfil</h4>
+          <form onsubmit="event.preventDefault()">
+            <img id="imageProfile" class="rounded shadow m-3" width="200px">
+            <input type="file" id="newFoto" class="form-control" accept="image/png, image/jpeg">
+            <input type="button" id="btnFoto" class="mt-2 btn btn-primary" value="Actualizar foto">
+          </form>
+        </div>
+        <div class="col-md-4 col-sm-12 col-12">
+          <h4>Cambiar datos del perfil</h4>
+          <form class="row g-3" onsubmit="event.preventDefault();" id="table">
+            <div class="col-md-5">
+              <label class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="name" name="inputData" />
+            </div>
+            <div class="row">
+              <div class="col-md-5">
+                <label class="form-label">Nombre de empresa</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" id="name_empresa" aria-describedby="inputGroupPrepend2"
+                    name="inputData" />
+                </div>
+              </div>
+              <div class="col-md-7">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="inputData" />
+              </div>
+            </div>
+            <div class="col-md-5">
+              <label class="form-label">Actualizar contraseña</label>
+              <input type="password" class="form-control" id="password" name="inputData" />
+            </div>
+            <div class="col-12">
+              <button class="btn btn-primary d-inline" id="btn-submit">Cambiar datos</button>
+            </div>
+            <div class="col-12">
+              <button class="btn btn-danger d-inline" id="btnFullLogout">Cerrar sesión en todos los
+                dispositivos</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="../../dist/profile.js"></script>
+  <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+</body>
+
+</html>

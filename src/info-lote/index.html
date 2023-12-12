@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="../../node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+    <title>Lote | Clasificación</title>
+</head>
+
+<body>
+    <div id="navbar"></div>
+    <div class="d-flex flex-row-reverse">
+        <i class="bi bi-moon-stars-fill"></i>
+        <div class="form-check form-switch ms-auto mt-3 me-3" id="switcher">
+            <input class="form-check-input" type="checkbox" id="lightSwitch" />
+        </div>
+        <i class="bi bi-sun-fill"></i>
+    </div>
+
+    <div class="container" id="container">
+        <div id="notification"></div>
+        <h1 id="info-lote">Lote:
+            <pre>No se ha podido cargar el ID lote</pre>
+        </h1>
+        <h4 id="ubi">Ubicación: No se ha podido cargar la ubicación del lote</h4>
+        <h4 id="observation">Observacion: No se ha podido cargar la observación del lote</h4>
+        <h4 id="status">Estado: No se ha podido cargar el estado del lote</h4>
+        <div id="clasificado"></div>
+
+        <div class="col-md-6">
+
+            <table class="table table-striped" id="table">
+                <thead id="thead">
+                    <tr id="trTable">
+                        <th scope="col">Componentes</th>
+                        <th scope="col">Cantidad</th>
+                        <th scope="col">Observación</th>
+
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md">
+                    <button class="btn btn-danger" id="btn-rechazar" name="btn">Rechazar</button>
+                    <button disabled class="btn btn-success" id="btn-clasificar" name="btn">Clasificar</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script type="module" src="../../dist/infoLote.js"></script>
+    <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+</body>
+
+</html>

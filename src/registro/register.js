@@ -1,3 +1,6 @@
+import { asyncApiRequest } from "../utils/funcs.js";
+import { domain } from "../utils/funcs.js";
+
 document.addEventListener('DOMContentLoaded', function () {
     console.log("El DOM está completamente cargado y parseado");
     let  usernameConfirm = false;
@@ -18,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
     const username = this.value;
     const validationMessage = document.getElementById('usernameValidationMessage');
+    
     if (/^[a-zA-Z0-9_]{4,15}$/.test(username)) {
         validationMessage.textContent = 'Nombre de usuario válido';
         validationMessage.style.color = 'green';
@@ -66,6 +70,7 @@ document.getElementById('confirmPassword').addEventListener('input', function ()
         const newUsername = document.getElementById('newUsername').value;
         const newPassword = document.getElementById('newPassword').value;
         const newEmail = document.getElementById('newEmail').value;
+        const newNombreEmpresa = document.getElementById('newNombreEmpresa').value
 
         // Realiza la validación final de todos los campos antes de enviar
         const usernameValidationMessage = document.getElementById('usernameValidationMessage');
@@ -76,34 +81,26 @@ document.getElementById('confirmPassword').addEventListener('input', function ()
 
                 alert("dentro");
             // Realiza la petición al servidor
-            fetch('http://127.0.0.1:8000/api/users', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name: newUsername,
-                    email: newEmail,
-                    password: newPassword,
-                }),
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error en la creación del usuario');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Usuario creado con éxito:', data);
-                // Aquí puedes redirigir al usuario o mostrar un mensaje de éxito
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                // Manejar errores, como mostrar un mensaje al usuario
-            });
+            let bodyContent =JSON.stringify({
+                name: newUsername,
+                name_empresa: newNombreEmpresa,
+                email: newEmail,
+                password: newPassword,
+                }) ;
+            let url = domain+"/api/users"
+            asyncApiRequest("POST",url,bodyContent).then(function(resRegister){
+            console.log(resRegister);
+            window.location.href = '../loggin/loggin.html';
+
+    })
+           
         } else {
             alert('Por favor, completa todos los campos correctamente.');
         }
+
+
+
+        
     });
 
 

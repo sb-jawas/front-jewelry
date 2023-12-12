@@ -1,16 +1,84 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="main.css">
-    <link href="https://fonts.googleapis.com/css?family=Archivo+Black&display=swap" rel="stylesheet">
-    <title>Document</title>
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="../../node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="scss/main.css">
+    <title>Login</title>
 </head>
-<body>
-    <h1 class="gradient-text">Prueba texto</h1>
-    <div class="test"> 
+
+<body class="bg-secondary">
+    <div class="container">
+        <div class="row mt-5 rounded shadow bg-light">
+            <div class="col-sm-8 col-md-6 col-lg-4">
+                <div id="login" class="mt-5 p-4">
+                    <h1 class="text-center">Inicio de sesión</h1>
+                    <div id="notification"></div>
+                    <form onsubmit="event.preventDefault()">
+                        <div class="form-group">
+                            <label class="form-group-text test" for="email">Email address</label>
+                            <input type="email" autocomplete="username" class="form-control  input-group-sm" id="email"
+                                required />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-group-text test" for="password">Contraseña</label>
+                            <input type="password" autocomplete="current-password" class="form-control input-group-sm"
+                                id="password" required />
+                        </div>
+
+                        <div class="test">
+                            <p>Necesitas una cuenta? <a href="signup/">créa una cuenta</a> ahora!</p>
+                            <a href="forget-pass/" id="resetPass" >Me he olvidado de la contraseña</a>
+                            <button id="submit" class="btn btn-primary mx-auto d-block mt-2" type="submit"> Iniciar
+                                sesión</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-2 col-sm-1 col-md-1 col-lg-2"></div>
+            <div class="col">
+                <canvas id="cobe" style="width: 500px; height: 500px" width="1000" height="1000"></canvas>
+
+                <script type="module">
+                    import createGlobe from 'https://cdn.skypack.dev/cobe'
+
+                    let phi = 0
+                    let canvas = document.getElementById("cobe")
+
+                    const globe = createGlobe(canvas, {
+                        devicePixelRatio: 2,
+                        width: 1000,
+                        height: 1000,
+                        phi: 0,
+                        theta: 0,
+                        dark: 0,
+                        diffuse: 1.2,
+                        scale: 1,
+                        mapSamples: 16000,
+                        mapBrightness: 6,
+                        baseColor: [1, 1, 1],
+                        markerColor: [1, 0.5, 1],
+                        glowColor: [1, 1, 1],
+                        offset: [0, 0],
+                        markers: [
+                            { location: [38.6929488, -4.1085622], size: 0.03 }
+                        ],
+                        onRender: (state) => {
+                            state.phi = phi
+                            phi += 0.001
+                        },
+                    })
+                </script>
+            </div>
+        </div>
+        <div class="col-sm-4"></div>
     </div>
-    <script src="/dist/main.js"></script>
+    <script type="module" src="../dist/login.js"></script>
+    <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
 </body>
+
 </html>

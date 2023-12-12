@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<!--
+ @license
+ Copyright 2019 Google LLC. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+-->
+<html>
+  <head>
+    <title>Geocoding Service</title>
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="../../node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+   
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+   <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="navbar"></div>
+    <div class="container">
+        <div class="row">
+          <div class="d-flex align-items-center">
+            <h1 class="m-3 p-3">Lote</h1>
+          </div>
+          <div class="row">
+            <div class="col-3">
+            </div>
+            <div class="col-6">              
+              <div id="notification"></div>
+            </div>
+          </div>
+            <div class="col-3"></div>
+            <form onsubmit="event.preventDefault();" class="col-6">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="obs" placeholder="Password">
+                <label for="floatingPassword">Observación</label>
+              </div>
+              <div class="form-floating m-3">
+                <input type="text" class="form-control" id="ubi">
+                <label for="floatingInput">Ubicación</label>
+              </div>
+              <input type="button" class="btn btn-outline-success" value="Limpiar" id="clear">
+                <input type="submit" class="btn btn-primary m-3" id="btn" value="Enviar">
+            </form>
+          </div>
+        </div>
+        <div id="map"></div>
+
+        <script type="module" src="../../dist/lote.js"></script>
+        <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    <script type="module" src="../../dist/loteMaps.js"></script>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDf-brNNDuu9hnF7YEPBZe9whI-mSSOvzw&callback=initMap&&libraries=places&v=weekly"
+      defer
+    ></script>
+  </body>
+</html>
