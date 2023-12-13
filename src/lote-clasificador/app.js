@@ -1,4 +1,4 @@
-import { domain, asyncApiRequest, formatDate, sendNotification, getLocalStorage } from "../utils/funcs.js";
+import { domain, asyncApiRequest, formatDate, sendNotification, getLocalStorage, redirectToMyRol } from "../utils/funcs.js";
 import { navbar } from "../utils/navbar.js";
 
 let rolView = 2

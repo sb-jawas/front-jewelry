@@ -1,9 +1,9 @@
 import { uploadImage } from "../http/user.js"
 import { createList } from "../info-lote/clasificador.js"
-import { asyncApiRequest, domain, getLocalStorage, sendNotification } from "../utils/funcs.js"
+import { asyncApiRequest, domain, getLocalStorage, redirectToMyRol, sendNotification } from "../utils/funcs.js"
 import { navbar } from "../utils/navbar.js"
 
-let rolView = 4
+let rolView = 3
 redirectToMyRol(rolView)
 navbar(getLocalStorage("userName"),"Diseñador")
 
